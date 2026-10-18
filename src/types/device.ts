@@ -10,7 +10,7 @@ export interface PowerBankModel {
   tempRange: string
   /** Official/marketing Qi2 support from the model table. */
   supportsQI2?: boolean
-  /** Community 0x06/0x07 toggle, only verified on the 10000mAh 45W ultra-thin magnetic models. */
+  /** Community 0x06/0x07 toggle, only enabled for WPB1025S. */
   supportsQi2Toggle?: boolean
 }
 

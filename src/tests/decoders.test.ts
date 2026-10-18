@@ -149,10 +149,10 @@ describe('temperature model decoder', () => {
 })
 
 describe('Qi2.2 model gate', () => {
-  it('only enables the control for the 10000mAh 45W ultra-thin models', () => {
+  it('only enables the control for WPB1025S', () => {
     expect(findModelById(9)?.supportsQi2Toggle).toBe(true)
-    expect(findModelById(16)?.supportsQi2Toggle).toBe(true)
     expect(findModelById(19)?.supportsQi2Toggle).toBe(true)
+    expect(findModelById(16)?.supportsQi2Toggle).not.toBe(true)
     expect(findModelById(10)?.supportsQi2Toggle).not.toBe(true)
     expect(findModelById(12)?.supportsQi2Toggle).not.toBe(true)
   })

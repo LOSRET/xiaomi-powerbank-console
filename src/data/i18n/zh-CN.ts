@@ -22,7 +22,7 @@ export const zhCN = {
     '覆盖小米金沙江磁吸充电宝、自带线充电宝等型号。使用指定 USB-C 口，并在 4 秒内连续按 8 次按键进入数据传输模式。',
   'home.aboutPrivacyTitle': '数据仅在本机处理',
   'home.aboutPrivacyBody':
-    '没有后端、没有遥测，设备数据不会上传。默认只发送读取命令；仅 WPB1025S / WPB1026S 提供 Qi2.2 开关。',
+    '没有后端、没有遥测，设备数据不会上传。默认只发送读取命令；仅 WPB1025S 提供 Qi2.2 开关。',
   'home.aboutModels': '查看支持型号与接口',
   'home.aboutGuide': '阅读异常处理指引',
 
@@ -163,7 +163,7 @@ export const zhCN = {
   'modal.disconnect.cancel': '取消',
   'modal.qi2Enable.title': '开启 Qi2.2？',
   'modal.qi2Enable.body':
-    '仅支持小米金沙江充电宝 超薄磁吸 10000 45W（WPB1025S / WPB1026S）。开启后无线充电会切换到 Qi2.2 25W 模式，可能短暂中断。',
+    '仅支持小米金沙江充电宝 超薄磁吸 10000 45W（WPB1025S）。开启后无线充电会切换到 Qi2.2 25W 模式，可能短暂中断。',
   'modal.qi2Enable.ok': '开启',
   'modal.qi2Disable.title': '关闭 Qi2.2？',
   'modal.qi2Disable.body': '关闭后无线充电会回到默认模式，可能短暂中断。',
@@ -214,7 +214,7 @@ export const zhCN = {
   'guide.deviceLink': '查看设备详情',
   'guide.sideTitle': '安全提示',
   'guide.sideBody':
-    '本工具默认只读取设备状态；仅在 WPB1025S / WPB1026S 上提供 Qi2.2 开关，不会修改固件或电池参数。异常频繁出现时，请优先联系小米售后。',
+    '本工具默认只读取设备状态；仅在 WPB1025S 上提供 Qi2.2 开关，不会修改固件或电池参数。异常频繁出现时，请优先联系小米售后。',
   'guide.relatedTitle': '相关页面',
   'guide.relatedModels': '支持型号与接口',
 

@@ -25,7 +25,7 @@ const POWER_BANK_MODELS: PowerBankModel[] = [
     connection: 'C1',
     isShow: true,
     tempRange: '-20℃~60℃',
-    supportsQi2Toggle: true,
+    // WPB1026S is read-only here; the Qi2.2 toggle is only enabled for WPB1025S.
   },
   {
     id: 10,

@@ -26,7 +26,7 @@ export const en: Record<MessageKey, string> = {
     'Supports Xiaomi magnetic and integrated-cable power banks. Use the designated USB-C port and press the power bank button 8 times within 4 seconds to enter data transfer mode.',
   'home.aboutPrivacyTitle': 'Processed locally',
   'home.aboutPrivacyBody':
-    'No backend and no telemetry. Device data is never uploaded. Only read commands are sent by default; Qi2.2 switching is limited to WPB1025S / WPB1026S.',
+    'No backend and no telemetry. Device data is never uploaded. Only read commands are sent by default; Qi2.2 switching is limited to WPB1025S.',
   'home.aboutModels': 'View supported models and ports',
   'home.aboutGuide': 'Read the troubleshooting guide',
 
@@ -182,7 +182,7 @@ export const en: Record<MessageKey, string> = {
   'modal.disconnect.cancel': 'Cancel',
   'modal.qi2Enable.title': 'Enable Qi2.2?',
   'modal.qi2Enable.body':
-    'Only available on the Xiaomi UltraThin Magnetic Power Bank 10000 45W (WPB1025S / WPB1026S). Enabling switches wireless charging to Qi2.2 25W and may briefly interrupt it.',
+    'Only available on the Xiaomi UltraThin Magnetic Power Bank 10000 45W (WPB1025S). Enabling switches wireless charging to Qi2.2 25W and may briefly interrupt it.',
   'modal.qi2Enable.ok': 'Enable',
   'modal.qi2Disable.title': 'Disable Qi2.2?',
   'modal.qi2Disable.body':
@@ -237,7 +237,7 @@ export const en: Record<MessageKey, string> = {
   'guide.deviceLink': 'View device details',
   'guide.sideTitle': 'Safety note',
   'guide.sideBody':
-    'This tool reads device state by default; only WPB1025S / WPB1026S expose a Qi2.2 toggle. It does not modify firmware or battery parameters. If anomalies occur frequently, contact Xiaomi support.',
+    'This tool reads device state by default; only WPB1025S exposes a Qi2.2 toggle. It does not modify firmware or battery parameters. If anomalies occur frequently, contact Xiaomi support.',
   'guide.relatedTitle': 'Related pages',
   'guide.relatedModels': 'Supported models and ports',
 
