@@ -47,10 +47,6 @@ export function useI18n() {
     }
   }
 
-  function toggleLanguage(): void {
-    setLanguage(language.value === 'en' ? 'zh-CN' : 'en')
-  }
-
   function t(key: MessageKey | string, params?: Record<string, string | number>): string {
     const messages = MESSAGES[language.value]
     const fallback = MESSAGES.en
@@ -65,17 +61,11 @@ export function useI18n() {
     return value
   }
 
-  function formatNumber(value: number, options?: Intl.NumberFormatOptions): string {
-    return new Intl.NumberFormat(language.value === 'en' ? 'en-GB' : 'zh-CN', options).format(value)
-  }
-
   return {
     lang,
     isEnglish,
     setLanguage,
-    toggleLanguage,
     t,
-    formatNumber,
   }
 }
 

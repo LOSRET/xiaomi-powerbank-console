@@ -1,32 +1,16 @@
 <script setup lang="ts">
-import { computed, watchEffect } from 'vue'
-import { useRoute } from 'vue-router'
 import AppHeader from '@/components/AppHeader.vue'
 import AppFooter from '@/components/AppFooter.vue'
 import AppModal from '@/components/AppModal.vue'
 import ToastStack from '@/components/ToastStack.vue'
 import { useI18n } from '@/composables/useI18n'
+import { useSeo } from '@/composables/useSeo'
 import { useDeviceStore } from '@/stores/device'
 
-const route = useRoute()
 const store = useDeviceStore()
-const { t, lang } = useI18n()
+const { t } = useI18n()
 
-const pageTitle = computed(() => {
-  if (route.name === 'models') return `${t('models.title')} · ${t('app.title')}`
-  if (route.name === 'guide') return `${t('guide.title')} · ${t('app.title')}`
-  return t('app.title')
-})
-
-watchEffect(() => {
-  if (typeof document === 'undefined') return
-  document.title = pageTitle.value
-  document.documentElement.lang = lang.value === 'en' ? 'en' : 'zh-CN'
-  const description = document.querySelector('meta[name="description"]')
-  description?.setAttribute('content', t('app.description'))
-})
-
-const errorModalOpen = computed(() => Boolean(store.errorModal))
+useSeo()
 </script>
 
 <template>
@@ -60,7 +44,7 @@ const errorModalOpen = computed(() => Boolean(store.errorModal))
     :cancel-text="t('modal.disconnect.cancel')"
     tone="warning"
     icon="power"
-    @close="store.disconnectConfirmOpen = false"
+    @close="store.cancelDisconnect()"
     @confirm="store.confirmDisconnect()"
   />
 
@@ -84,16 +68,5 @@ const errorModalOpen = computed(() => Boolean(store.errorModal))
     icon="shield"
     @close="store.dismissUnauthorizedModal()"
     @confirm="store.dismissUnauthorizedModal()"
-  />
-
-  <AppModal
-    :open="errorModalOpen"
-    :title="store.errorModal?.title ?? t('modal.error.title')"
-    :body="store.errorModal?.body"
-    :ok-text="t('modal.error.ok')"
-    tone="danger"
-    icon="alert"
-    @close="store.closeErrorModal()"
-    @confirm="store.closeErrorModal()"
   />
 </template>

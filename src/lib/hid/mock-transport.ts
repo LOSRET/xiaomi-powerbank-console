@@ -135,12 +135,6 @@ export class MockTransport implements HidTransport {
     return () => this.disconnectListeners.delete(listener)
   }
 
-  /** Used by the demo UI to show the unplug flow. */
-  simulateDisconnect(): void {
-    this.opened = false
-    for (const listener of this.disconnectListeners) listener()
-  }
-
   private emit(command: number, payload: Uint8Array<ArrayBufferLike>): void {
     const frame = buildCommandFrame(command, payload)
     for (const listener of this.reportListeners) listener(frame)

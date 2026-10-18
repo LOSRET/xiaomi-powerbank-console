@@ -2,6 +2,8 @@
 
 一个用 **Vue 3 + TypeScript + WebHID** 重写的「小米移动电源详情」前端。项目从公开网页 [`powerbank.mieco.net`](https://powerbank.mieco.net/) 的 WebHID 行为逆向而来，可部署到 **Cloudflare Pages**，并附带一个无需真实设备的演示模式。
 
+在线站点：[xiaomipowerbank.neko2.top](https://xiaomipowerbank.neko2.top/)
+
 > 非官方工具，与小米公司无隶属关系。所有设备数据只在浏览器内解析，不会上传到服务器。
 
 ![桌面端演示模式](docs/images/desktop-demo.png)
@@ -78,9 +80,16 @@ npm run build
 
 仓库已包含：
 
-- `public/_redirects`：SPA history 路由回退到 `index.html`
+- `public/_redirects`：尾斜杠规范化；SPA 路由由静态 HTML 外壳和 `404.html` 处理
 - `public/_headers`：基础安全响应头与静态资源缓存
 - `wrangler.toml`：`pages_build_output_dir = "dist"`
+
+### SEO
+
+- `src/seo/site.ts` 是页面标题、描述、关键词、canonical、Open Graph、Twitter Card 与 JSON-LD 的单一来源。
+- `scripts/vite-plugin-seo.ts` 在构建时为 `/`、`/models`、`/exception-guide` 生成带独立元信息的静态 HTML 外壳，并输出 `404.html` 与 `sitemap.xml`；禁用 JavaScript 时还有可读的 `<noscript>` 内容。
+- `public/robots.txt` 指向 sitemap，`public/og-image.png` 是 1200×630 的社交分享图。
+- 使用自定义域名时，修改 `SITE_URL` 以及 `public/robots.txt` 中的 `Sitemap` 地址。
 
 也可以使用 Wrangler 直接发布：
 
@@ -104,9 +113,12 @@ wrangler pages deploy dist --project-name xiaomi-powerbank-console
 │  └─ images/                     # README 截图
 ├─ public/
 │  ├─ _headers                    # Cloudflare Pages 响应头
-│  ├─ _redirects                  # SPA 路由回退
+│  ├─ _redirects                  # 尾斜杠规范化
 │  ├─ favicon.svg
+│  ├─ og-image.png                # 1200×630 社交分享图
 │  └─ robots.txt
+├─ scripts/
+│  └─ vite-plugin-seo.ts          # 静态 HTML 外壳、sitemap、404 生成
 ├─ src/
 │  ├─ assets/styles/              # 设计 token 与基础样式
 │  ├─ components/                 # 连接卡片、设备面板、电芯表、协议日志等
@@ -119,6 +131,7 @@ wrangler pages deploy dist --project-name xiaomi-powerbank-console
 │  │  ├─ hid/                     # WebHID / 模拟传输层、设备客户端
 │  │  └─ protocol/                # CRC、帧、解码器、格式化
 │  ├─ router/
+│  ├─ seo/                        # 页面元数据、canonical 与 JSON-LD
 │  ├─ stores/device.ts            # Pinia 设备状态与会话流程
 │  ├─ tests/                      # Vitest 协议与模拟设备测试
 │  ├─ types/

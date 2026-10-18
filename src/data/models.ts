@@ -5,7 +5,7 @@ import type { Lang, PowerBankModel } from '@/types/device'
  * public model list; hidden entries are still used to identify a connected
  * device by its Hello response.
  */
-export const POWER_BANK_MODELS: PowerBankModel[] = [
+const POWER_BANK_MODELS: PowerBankModel[] = [
   {
     id: 9,
     name: '小米金沙江充电宝 超薄磁吸 10000 45W',

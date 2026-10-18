@@ -3,7 +3,12 @@ import { computed, onMounted, ref, watch } from 'vue'
 import { useI18n } from '@/composables/useI18n'
 import { useDeviceStore } from '@/stores/device'
 import { historyFaultKey } from '@/lib/protocol/decoders'
-import { formatDeviceTime } from '@/lib/protocol/formatting'
+import {
+  formatCurrent,
+  formatDeviceTime,
+  formatTemperature,
+  formatVoltage,
+} from '@/lib/protocol/formatting'
 import type { HistoryRecord } from '@/types/device'
 import Icon from './Icon.vue'
 
@@ -33,13 +38,13 @@ function typeLabel(record: HistoryRecord): string {
 
 function valueLabel(record: HistoryRecord): string {
   if (record.errorType === 1 || record.errorType === 2) {
-    return `${(record.value / 1000).toFixed(2)} V`
+    return formatVoltage(record.value)
   }
   if (record.errorType === 3 || record.errorType === 4) {
-    return `${record.value} °C`
+    return formatTemperature(record.value)
   }
   if (record.errorType === 5) {
-    return record.value > 100 ? `${(record.value / 1000).toFixed(2)} A` : `${record.value} A`
+    return record.value > 100 ? formatCurrent(record.value) : `${record.value} A`
   }
   if (record.errorType === 7) {
     return `${record.value} mV`

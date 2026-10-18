@@ -1,1 +1,6 @@
-/* /index.html 200
+# SPA navigation is handled by Vue Router. The build emits static HTML shells
+# for /, /models and /exception-guide, plus a real 404.html for unknown paths,
+# so no catch-all rewrite is needed here.
+
+/models/ /models 301
+/exception-guide/ /exception-guide 301

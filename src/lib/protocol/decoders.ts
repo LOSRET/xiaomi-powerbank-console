@@ -162,7 +162,7 @@ export function decodeQi2Enable(payload: Uint8Array): Qi2EnableResult {
   }
 }
 
-export interface HistoryBatch {
+interface HistoryBatch {
   statusCode: number
   records: HistoryRecord[]
 }
@@ -182,7 +182,7 @@ export function decodeHistoryBatch(payload: Uint8Array): HistoryBatch {
       const stateByte = payload[offset + 5] ?? 0
       const errorType = stateByte & 0x3f
       const rawValue = readUInt16LE(payload, offset + 6)
-      const value = errorType === 3 || errorType === 4 ? toSignedWord(rawValue) : rawValue
+      const value = errorType === 3 || errorType === 4 ? readInt16LE(payload, offset + 6) : rawValue
 
       records.push({
         timestamp: readUInt32LE(payload, offset),
@@ -190,19 +190,11 @@ export function decodeHistoryBatch(payload: Uint8Array): HistoryBatch {
         chargeState: stateByte & 0xc0,
         errorType,
         value,
-        statusDescription: '',
-        rawHex: Array.from(payload.subarray(offset, offset + recordSize))
-          .map((byte) => byte.toString(16).padStart(2, '0').toUpperCase())
-          .join(''),
       })
     }
   }
 
   return { statusCode, records }
-}
-
-function toSignedWord(value: number): number {
-  return value > 0x7fff ? value - 0x10000 : value
 }
 
 export function chargeStateKey(code: number): string {
@@ -213,20 +205,6 @@ export function chargeStateKey(code: number): string {
       return 'status.charging'
     case 2:
       return 'status.idle'
-    default:
-      return 'status.unknown'
-  }
-}
-
-/** The Hello response uses a separate three-value state enum. */
-export function helloStateKey(code: number): string {
-  switch (code) {
-    case 0:
-      return 'status.idle'
-    case 1:
-      return 'status.charging'
-    case 2:
-      return 'status.discharging'
     default:
       return 'status.unknown'
   }

@@ -9,8 +9,8 @@ const { t } = useI18n()
   <div class="not-found page-shell">
     <div class="not-found__card card">
       <span class="not-found__code mono">404 / 0xA5</span>
-      <h1>{{ t('empty.title') }}</h1>
-      <p>{{ t('empty.body') }}</p>
+      <h1>{{ t('notFound.title') }}</h1>
+      <p>{{ t('notFound.body') }}</p>
       <RouterLink to="/" class="btn btn--primary">
         <Icon name="arrow-left" :size="17" />
         {{ t('common.back') }}

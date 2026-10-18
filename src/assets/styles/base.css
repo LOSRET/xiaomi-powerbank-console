@@ -150,6 +150,76 @@ kbd {
   border: 0;
 }
 
+/* Static fallback rendered inside <noscript> by the SEO build plugin. */
+.no-js-seo {
+  padding-block: clamp(36px, 6vw, 72px);
+}
+
+.no-js-seo__card {
+  max-width: 860px;
+  margin-inline: auto;
+  padding: clamp(28px, 5vw, 56px);
+}
+
+.no-js-seo__kicker {
+  color: var(--color-brand-strong);
+  font-size: 0.72rem;
+  font-weight: 620;
+  letter-spacing: 0.04em;
+}
+
+.no-js-seo h1 {
+  margin-top: 10px;
+  font-size: clamp(2rem, 5vw, 2.8rem);
+}
+
+.no-js-seo h2 {
+  margin-top: 30px;
+  font-size: 1.1rem;
+}
+
+.no-js-seo p,
+.no-js-seo li {
+  color: var(--color-muted);
+  font-size: 0.9rem;
+  line-height: 1.75;
+}
+
+.no-js-seo p {
+  margin-top: 10px;
+}
+
+.no-js-seo ul,
+.no-js-seo ol {
+  margin-top: 12px;
+  padding-left: 1.25rem;
+  list-style: disc;
+}
+
+.no-js-seo ol {
+  list-style: decimal;
+}
+
+.no-js-seo li + li {
+  margin-top: 6px;
+}
+
+.no-js-seo a {
+  color: var(--color-brand-strong);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.no-js-seo__models {
+  padding-left: 0;
+  list-style: none;
+}
+
+.no-js-seo__note {
+  color: var(--color-faint);
+  font-size: 0.76rem;
+}
+
 .skip-link {
   position: fixed;
   top: 12px;

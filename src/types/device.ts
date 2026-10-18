@@ -123,8 +123,6 @@ export interface HistoryRecord {
   chargeState: number
   errorType: number
   value: number
-  statusDescription: string
-  rawHex: string
 }
 
 export type ConnectionStatus =

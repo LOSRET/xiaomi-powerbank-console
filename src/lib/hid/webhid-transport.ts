@@ -1,5 +1,5 @@
 import type { TransportInfo } from '@/types/device'
-import { VENDOR_IDS } from '@/lib/protocol/constants'
+import { VENDOR_IDS, REPORT_ID } from '@/lib/protocol/constants'
 import type { HidTransport } from './transport'
 
 export class WebHidTransport implements HidTransport {
@@ -82,7 +82,7 @@ export class WebHidTransport implements HidTransport {
     if (!this.device.opened) throw new Error('HID device is not open')
     const report = new Uint8Array(frame.length)
     report.set(frame)
-    await this.device.sendReport(0, report)
+    await this.device.sendReport(REPORT_ID, report)
   }
 
   onInputReport(listener: (data: Uint8Array) => void): () => void {

@@ -78,14 +78,6 @@ export class DeviceClient {
     this.events = events
   }
 
-  get transportKind(): 'webhid' | 'demo' {
-    return this.transport.kind
-  }
-
-  get transportInfo() {
-    return this.transport.info
-  }
-
   async open(): Promise<void> {
     await this.transport.open()
     this.opened = true
@@ -224,16 +216,6 @@ export class DeviceClient {
       // The cable may already be gone.
     }
     await this.close()
-  }
-
-  sendRaw(frame: Uint8Array, label = 'Raw frame'): void {
-    void this.transport.send(frame).catch((error) => {
-      this.log({
-        direction: 'error',
-        label: `${label} failed`,
-        detail: error instanceof Error ? error.message : String(error),
-      })
-    })
   }
 
   private async request(

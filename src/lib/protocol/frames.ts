@@ -2,7 +2,7 @@ import type { ParsedFrame } from './types'
 import { crc8 } from './crc8'
 import { CMD, HEAD, HID_FRAME_SIZE } from './constants'
 
-export interface ExtractedFrames {
+interface ExtractedFrames {
   frames: ParsedFrame[]
   remaining: Uint8Array
 }

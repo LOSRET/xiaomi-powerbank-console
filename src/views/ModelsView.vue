@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { useI18n } from '@/composables/useI18n'
-import { VISIBLE_MODELS } from '@/data/models'
+import { VISIBLE_MODELS, modelDisplayName } from '@/data/models'
 import Icon from '@/components/Icon.vue'
 
-const { t, isEnglish } = useI18n()
+const { t, lang } = useI18n()
 const query = ref('')
 
 const filteredModels = computed(() => {
@@ -70,7 +70,7 @@ const filteredModels = computed(() => {
             {{ String(index + 1).padStart(2, '0') }}
           </span>
           <span class="models-table__name" role="cell" :data-label="t('models.colName')">
-            {{ isEnglish ? model.nameEn : model.name }}
+            {{ modelDisplayName(model, lang) }}
           </span>
           <span class="models-table__model mono" role="cell" :data-label="t('models.colModel')">
             {{ model.model }}

@@ -12,18 +12,8 @@ export function formatTemperature(celsius: number): string {
   return `${celsius} °C`
 }
 
-export function formatLevel(level: number): string {
-  return `${Math.max(0, Math.min(100, level))}%`
-}
-
 export function formatPercent(value: number): string {
   return `${value}%`
-}
-
-export function formatBytes(value: number): string {
-  if (value < 1024) return `${value} B`
-  if (value < 1024 * 1024) return `${(value / 1024).toFixed(1)} KB`
-  return `${(value / 1024 / 1024).toFixed(1)} MB`
 }
 
 /**

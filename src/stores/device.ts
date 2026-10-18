@@ -24,11 +24,6 @@ const MAX_HISTORY = 100
 const HEARTBEAT_INTERVAL = 15_000
 const WPB1007ZX_CUTOFF = 1_772_323_200
 
-interface ErrorModal {
-  title: string
-  body: string
-}
-
 export const useDeviceStore = defineStore('device', () => {
   const { t } = useI18n()
   const toast = useToast()
@@ -55,11 +50,9 @@ export const useDeviceStore = defineStore('device', () => {
   const lastUpdated = ref(0)
   const logs = ref<ProtocolLogEntry[]>([])
   const crcErrors = ref(0)
-  const protocolOpen = ref(false)
   const disconnectConfirmOpen = ref(false)
   const disconnectedModalOpen = ref(false)
   const unauthorizedModalOpen = ref(false)
-  const errorModal = ref<ErrorModal | null>(null)
 
   const client = shallowRef<DeviceClient | null>(null)
   let heartbeatTimer: number | null = null
@@ -97,18 +90,16 @@ export const useDeviceStore = defineStore('device', () => {
     const withSensors = cells.value.filter((cell) => cell.hasTemperatureSensor)
     return isWPB1007ZX.value ? withSensors.filter((cell) => cell.index === 1) : withSensors
   })
-  const batteryModel = computed(() => {
-    const firstId = Object.values(cellIds.value).find((id) => id.parsed)
-    return tempModel.value?.batteryModel || firstId?.parsed?.miCodeInfo.cellModel || '--'
-  })
-  const batteryManufacturer = computed(() => {
-    const parsed = Object.values(cellIds.value).find((id) => id.parsed)?.parsed
-    return parsed?.fixed.assemblyFactory ?? '--'
-  })
-  const batteryManufacturerEn = computed(() => {
-    const parsed = Object.values(cellIds.value).find((id) => id.parsed)?.parsed
-    return parsed?.fixed.assemblyFactoryEn ?? '--'
-  })
+  const firstParsedCell = computed(
+    () => Object.values(cellIds.value).find((id) => id.parsed)?.parsed ?? null,
+  )
+  const batteryModel = computed(
+    () => tempModel.value?.batteryModel || firstParsedCell.value?.miCodeInfo.cellModel || '--',
+  )
+  const batteryManufacturer = computed(() => firstParsedCell.value?.fixed.assemblyFactory ?? '--')
+  const batteryManufacturerEn = computed(
+    () => firstParsedCell.value?.fixed.assemblyFactoryEn ?? '--',
+  )
   const historySorted = computed(() =>
     [...history.value].sort((left, right) => right.timestamp - left.timestamp),
   )
@@ -254,7 +245,7 @@ export const useDeviceStore = defineStore('device', () => {
       addLog({
         direction: 'error',
         label: 'Handshake failed',
-        detail: error instanceof Error ? error.message : String(error),
+        detail: errorMessage(error),
       })
       return false
     }
@@ -282,7 +273,7 @@ export const useDeviceStore = defineStore('device', () => {
       addLog({
         direction: 'error',
         label: 'Device request failed',
-        detail: error instanceof Error ? error.message : String(error),
+        detail: errorMessage(error),
       })
     }
   }
@@ -308,7 +299,7 @@ export const useDeviceStore = defineStore('device', () => {
       addLog({
         direction: 'error',
         label: 'Qi2.2 status failed',
-        detail: error instanceof Error ? error.message : String(error),
+        detail: errorMessage(error),
       })
     } finally {
       qi2Loading.value = false
@@ -364,10 +355,6 @@ export const useDeviceStore = defineStore('device', () => {
         historyLoaded.value = false
         lastHistoryCount = nextBattery.historyErrorCount
       }
-
-      if (initial) {
-        lastUpdated.value = Date.now()
-      }
     } catch (error) {
       if (initial) {
         dataError.value = true
@@ -378,7 +365,7 @@ export const useDeviceStore = defineStore('device', () => {
       addLog({
         direction: 'error',
         label: 'Refresh failed',
-        detail: error instanceof Error ? error.message : String(error),
+        detail: errorMessage(error),
       })
     } finally {
       refreshing.value = false
@@ -441,7 +428,7 @@ export const useDeviceStore = defineStore('device', () => {
       addLog({
         direction: 'error',
         label: 'History request failed',
-        detail: error instanceof Error ? error.message : String(error),
+        detail: errorMessage(error),
       })
     } finally {
       historyLoading.value = false
@@ -510,7 +497,7 @@ export const useDeviceStore = defineStore('device', () => {
       addLog({
         direction: 'error',
         label: 'Qi2.2 update failed',
-        detail: error instanceof Error ? error.message : String(error),
+        detail: errorMessage(error),
       })
     } finally {
       qi2Toggling.value = false
@@ -546,6 +533,10 @@ export const useDeviceStore = defineStore('device', () => {
     disconnectConfirmOpen.value = true
   }
 
+  function cancelDisconnect(): void {
+    disconnectConfirmOpen.value = false
+  }
+
   async function exitDemo(): Promise<void> {
     await stopSession(true)
     toast.show(t('toast.demoExited'))
@@ -566,22 +557,6 @@ export const useDeviceStore = defineStore('device', () => {
     toast.show(t('toast.protocolCleared'))
   }
 
-  function openProtocolLog(): void {
-    protocolOpen.value = true
-  }
-
-  function closeProtocolLog(): void {
-    protocolOpen.value = false
-  }
-
-  function setErrorModal(title: string, body: string): void {
-    errorModal.value = { title, body }
-  }
-
-  function closeErrorModal(): void {
-    errorModal.value = null
-  }
-
   function dismissDisconnectedModal(): void {
     disconnectedModalOpen.value = false
   }
@@ -600,25 +575,21 @@ export const useDeviceStore = defineStore('device', () => {
     battery,
     cells,
     cellIds,
-    tempModel,
     qi2Status,
     qi2Loading,
     qi2Toggling,
     qi2ConfirmOpen,
     qi2PendingEnable,
     history: historySorted,
-    historyLoaded,
     historyLoading,
     refreshing,
     dataError,
     lastUpdated,
     logs,
     crcErrors,
-    protocolOpen,
     disconnectConfirmOpen,
     disconnectedModalOpen,
     unauthorizedModalOpen,
-    errorModal,
     // computed
     isConnected,
     isDemo,
@@ -647,13 +618,10 @@ export const useDeviceStore = defineStore('device', () => {
     cancelQi2Toggle,
     confirmQi2Toggle,
     requestDisconnect,
+    cancelDisconnect,
     confirmDisconnect,
     exitDemo,
     clearLogs,
-    openProtocolLog,
-    closeProtocolLog,
-    setErrorModal,
-    closeErrorModal,
     dismissDisconnectedModal,
     dismissUnauthorizedModal,
   }
@@ -678,4 +646,8 @@ async function withRetry<T>(
 
 function delay(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms))
+}
+
+function errorMessage(error: unknown): string {
+  return error instanceof Error ? error.message : String(error)
 }
