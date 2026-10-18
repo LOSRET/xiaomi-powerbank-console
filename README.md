@@ -95,13 +95,6 @@ npm run deploy
 wrangler pages deploy dist --project-name xiaomi-powerbank-console
 ```
 
-### GitHub Actions
-
-`.github/workflows/deploy.yml` 会在推送 `main` 时构建并发布到 Cloudflare Pages。需要在仓库 Secrets 中配置：
-
-- `CLOUDFLARE_API_TOKEN`
-- `CLOUDFLARE_ACCOUNT_ID`
-
 ## 项目结构
 
 ```text
