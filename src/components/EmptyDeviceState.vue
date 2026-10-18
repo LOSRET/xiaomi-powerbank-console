@@ -1,10 +1,7 @@
 <script setup lang="ts">
 import { useI18n } from '@/composables/useI18n'
-import { useDeviceStore } from '@/stores/device'
-import Icon from './Icon.vue'
 import PowerBankVisual from './PowerBankVisual.vue'
 
-const store = useDeviceStore()
 const { t } = useI18n()
 </script>
 
@@ -20,26 +17,6 @@ const { t } = useI18n()
 
     <div class="empty-panel__content">
       <PowerBankVisual :connected="false" :cell-count="2" status="unknown" model-name="USB-C" />
-      <div class="empty-panel__copy">
-        <h2>{{ t('empty.title') }}</h2>
-        <p>{{ t('empty.body') }}</p>
-        <div class="empty-panel__actions">
-          <button
-            v-if="store.isSupported"
-            type="button"
-            class="btn btn--primary"
-            @click="store.connect()"
-          >
-            <Icon name="usb" :size="17" />
-            {{ t('empty.connect') }}
-          </button>
-          <button type="button" class="btn btn--ghost" @click="store.connectDemo()">
-            <Icon name="activity" :size="17" />
-            {{ t('empty.demo') }}
-          </button>
-        </div>
-        <p class="empty-panel__hint">{{ t('empty.hint') }}</p>
-      </div>
     </div>
 
     <div class="empty-panel__tabs" aria-hidden="true">
@@ -54,7 +31,7 @@ const { t } = useI18n()
 <style scoped>
 .empty-panel {
   display: flex;
-  min-height: 620px;
+  min-height: 460px;
   flex-direction: column;
   padding: clamp(24px, 3.5vw, 36px);
 }
@@ -91,37 +68,7 @@ const { t } = useI18n()
   flex: 1;
   align-items: center;
   justify-content: center;
-  gap: clamp(24px, 5vw, 56px);
   padding: 28px 0 20px;
-}
-
-.empty-panel__copy {
-  max-width: 330px;
-}
-
-.empty-panel__copy h2 {
-  font-size: clamp(1.3rem, 2.2vw, 1.7rem);
-  font-weight: 620;
-}
-
-.empty-panel__copy p {
-  margin-top: 10px;
-  color: var(--color-muted);
-  font-size: 0.85rem;
-  line-height: 1.6;
-}
-
-.empty-panel__actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 20px;
-}
-
-.empty-panel__hint {
-  margin-top: 14px;
-  color: var(--color-faint);
-  font-size: 0.72rem;
 }
 
 .empty-panel__tabs {
@@ -176,23 +123,7 @@ const { t } = useI18n()
   }
 
   .empty-panel__content {
-    flex-direction: column;
-    align-items: center;
-    gap: 18px;
     padding-top: 24px;
-  }
-
-  .empty-panel__copy {
-    max-width: none;
-    text-align: center;
-  }
-
-  .empty-panel__copy h2 {
-    font-size: 1.3rem;
-  }
-
-  .empty-panel__actions {
-    justify-content: center;
   }
 
   .empty-panel__placeholder {

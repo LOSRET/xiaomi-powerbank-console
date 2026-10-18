@@ -48,8 +48,7 @@ const { t } = useI18n()
 
 <style scoped>
 .reading-notes {
-  margin-top: 14px;
-  padding: 22px;
+  padding: 22px clamp(22px, 3vw, 30px);
 }
 
 .reading-notes h2 {
@@ -58,9 +57,9 @@ const { t } = useI18n()
 }
 
 .reading-notes__list {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px clamp(18px, 2.5vw, 28px);
   margin-top: 16px;
 }
 
@@ -118,5 +117,12 @@ const { t } = useI18n()
 .reading-notes__link:hover {
   text-decoration: underline;
   text-underline-offset: 3px;
+}
+
+@media (max-width: 860px) {
+  .reading-notes__list {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 15px;
+  }
 }
 </style>
