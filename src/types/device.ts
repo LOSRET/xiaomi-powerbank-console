@@ -8,7 +8,10 @@ export interface PowerBankModel {
   connection: 'C1' | 'C2'
   isShow: boolean
   tempRange: string
+  /** Official/marketing Qi2 support from the model table. */
   supportsQI2?: boolean
+  /** Community 0x06/0x07 toggle, only verified on the 10000mAh 45W ultra-thin magnetic models. */
+  supportsQi2Toggle?: boolean
 }
 
 export interface DeviceIdentity {
@@ -99,6 +102,19 @@ export interface TempModelInfo {
   lowTemp: number | null
   range: string
   batteryModel: string
+}
+
+export interface Qi2Status {
+  statusCode: number
+  success: boolean
+  enabled: boolean
+  rawPayload: Uint8Array
+}
+
+export interface Qi2EnableResult {
+  statusCode: number
+  success: boolean
+  rawPayload: Uint8Array
 }
 
 export interface HistoryRecord {

@@ -70,6 +70,7 @@ export class MockTransport implements HidTransport {
 
   private opened = false
   private tick = 0
+  private qi2Enabled = false
   private readonly reportListeners = new Set<(data: Uint8Array) => void>()
   private readonly disconnectListeners = new Set<() => void>()
   private readonly history = demoHistory()
@@ -108,6 +109,13 @@ export class MockTransport implements HidTransport {
       }
       case CMD.GET_CELL_TEMP_MODEL:
         this.emit(RESPONSE_CMD.CELL_TEMP_MODEL, this.tempModelPayload())
+        break
+      case CMD.GET_QI2_STATUS:
+        this.emit(RESPONSE_CMD.QI2_STATUS, new Uint8Array([0, this.qi2Enabled ? 1 : 0]))
+        break
+      case CMD.ENABLE_QI2:
+        this.qi2Enabled = parsed.payload[0] === 1
+        this.emit(RESPONSE_CMD.ENABLE_QI2, new Uint8Array([0]))
         break
       case CMD.GET_HISTORY:
         this.emit(RESPONSE_CMD.HISTORY, this.historyPayload(parsed.payload))

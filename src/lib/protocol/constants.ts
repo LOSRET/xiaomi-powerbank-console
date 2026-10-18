@@ -33,4 +33,5 @@ export const TIMEOUT = {
   COMMAND: 3_000,
   BATTERY_ID: 1_500,
   HISTORY: 2_000,
+  QI2_WRITE: 5_000,
 } as const

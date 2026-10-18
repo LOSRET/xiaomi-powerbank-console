@@ -9,6 +9,7 @@ import type {
   HelloInfo,
   HistoryRecord,
   ProtocolLogEntry,
+  Qi2Status,
   TempModelInfo,
 } from '@/types/device'
 import { DeviceClient } from '@/lib/hid/device-client'
@@ -41,6 +42,11 @@ export const useDeviceStore = defineStore('device', () => {
   const cells = ref<CellStatus[]>([])
   const cellIds = ref<Record<number, BatteryIdInfo>>({})
   const tempModel = ref<TempModelInfo | null>(null)
+  const qi2Status = ref<Qi2Status | null>(null)
+  const qi2Loading = ref(false)
+  const qi2Toggling = ref(false)
+  const qi2ConfirmOpen = ref(false)
+  const qi2PendingEnable = ref(false)
   const history = ref<HistoryRecord[]>([])
   const historyLoaded = ref(false)
   const historyLoading = ref(false)
@@ -68,6 +74,7 @@ export const useDeviceStore = defineStore('device', () => {
   const isConnected = computed(() => status.value === 'connected' || status.value === 'demo')
   const isDemo = computed(() => status.value === 'demo')
   const activeModel = computed(() => hello.value?.model ?? null)
+  const supportsQi2Toggle = computed(() => activeModel.value?.supportsQi2Toggle === true)
   const isWPB1007ZX = computed(() => activeModel.value?.model === 'WPB1007ZX')
   const modelId = computed(() => hello.value?.modelId ?? 0)
   const productName = computed(() => {
@@ -130,6 +137,11 @@ export const useDeviceStore = defineStore('device', () => {
     cells.value = []
     cellIds.value = {}
     tempModel.value = null
+    qi2Status.value = null
+    qi2Loading.value = false
+    qi2Toggling.value = false
+    qi2ConfirmOpen.value = false
+    qi2PendingEnable.value = false
     history.value = []
     historyLoaded.value = false
     dataError.value = false
@@ -281,6 +293,28 @@ export const useDeviceStore = defineStore('device', () => {
     await startSession(transport)
   }
 
+  async function refreshQi2Status(activeClient: DeviceClient): Promise<void> {
+    if (!supportsQi2Toggle.value) {
+      qi2Status.value = null
+      return
+    }
+
+    qi2Loading.value = true
+    try {
+      const status = await activeClient.getQi2Status()
+      qi2Status.value = status.success ? status : null
+    } catch (error) {
+      qi2Status.value = null
+      addLog({
+        direction: 'error',
+        label: 'Qi2.2 status failed',
+        detail: error instanceof Error ? error.message : String(error),
+      })
+    } finally {
+      qi2Loading.value = false
+    }
+  }
+
   async function refreshData({ initial = false } = {}): Promise<void> {
     const activeClient = client.value
     if (!activeClient || refreshing.value || !isConnected.value) return
@@ -315,6 +349,8 @@ export const useDeviceStore = defineStore('device', () => {
           tempModel.value = null
         }
       }
+
+      await refreshQi2Status(activeClient)
 
       if (nextBattery.cellCount !== idsLoadedCellCount) {
         cellIds.value = {}
@@ -412,6 +448,76 @@ export const useDeviceStore = defineStore('device', () => {
     }
   }
 
+  async function reloadQi2Status(): Promise<void> {
+    const activeClient = client.value
+    if (!activeClient || qi2Loading.value) return
+    await refreshQi2Status(activeClient)
+  }
+
+  function requestQi2Toggle(enabled: boolean): void {
+    if (!supportsQi2Toggle.value || !qi2Status.value || qi2Toggling.value) return
+    qi2PendingEnable.value = enabled
+    qi2ConfirmOpen.value = true
+  }
+
+  function cancelQi2Toggle(): void {
+    qi2ConfirmOpen.value = false
+  }
+
+  async function confirmQi2Toggle(): Promise<void> {
+    const activeClient = client.value
+    const target = qi2PendingEnable.value
+    qi2ConfirmOpen.value = false
+    if (qi2Toggling.value) return
+    if (!activeClient || !supportsQi2Toggle.value || !isConnected.value) return
+
+    qi2Toggling.value = true
+    try {
+      const result = await activeClient.setQi2(target)
+      if (!result.success) {
+        toast.error(t('toast.qi2Failed'))
+        addLog({
+          direction: 'error',
+          label: 'Qi2.2 update failed',
+          detail: `status ${result.statusCode}`,
+        })
+        return
+      }
+
+      // The write response is authoritative. Try to read the state back, but do
+      // not report failure if the follow-up query times out.
+      try {
+        const status = await activeClient.getQi2Status()
+        qi2Status.value = status.success
+          ? status
+          : {
+              statusCode: status.statusCode,
+              success: true,
+              enabled: target,
+              rawPayload: status.rawPayload,
+            }
+      } catch {
+        qi2Status.value = {
+          statusCode: 0,
+          success: true,
+          enabled: target,
+          rawPayload: new Uint8Array(),
+        }
+      }
+      toast.success(t(target ? 'toast.qi2Enabled' : 'toast.qi2Disabled'))
+    } catch (error) {
+      toast.error(t('toast.qi2Failed'))
+      addLog({
+        direction: 'error',
+        label: 'Qi2.2 update failed',
+        detail: error instanceof Error ? error.message : String(error),
+      })
+    } finally {
+      qi2Toggling.value = false
+      qi2PendingEnable.value = false
+    }
+  }
+
   async function stopSession(manual: boolean): Promise<void> {
     manualDisconnect = manual
     stopHeartbeat()
@@ -495,6 +601,11 @@ export const useDeviceStore = defineStore('device', () => {
     cells,
     cellIds,
     tempModel,
+    qi2Status,
+    qi2Loading,
+    qi2Toggling,
+    qi2ConfirmOpen,
+    qi2PendingEnable,
     history: historySorted,
     historyLoaded,
     historyLoading,
@@ -512,6 +623,7 @@ export const useDeviceStore = defineStore('device', () => {
     isConnected,
     isDemo,
     activeModel,
+    supportsQi2Toggle,
     isWPB1007ZX,
     modelId,
     productName,
@@ -530,6 +642,10 @@ export const useDeviceStore = defineStore('device', () => {
     connectDemo,
     refreshData,
     loadHistory,
+    reloadQi2Status,
+    requestQi2Toggle,
+    cancelQi2Toggle,
+    confirmQi2Toggle,
     requestDisconnect,
     confirmDisconnect,
     exitDemo,

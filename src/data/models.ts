@@ -15,6 +15,7 @@ export const POWER_BANK_MODELS: PowerBankModel[] = [
     isShow: true,
     tempRange: '-20℃~60℃',
     supportsQI2: false,
+    supportsQi2Toggle: true,
   },
   {
     id: 16,
@@ -24,6 +25,7 @@ export const POWER_BANK_MODELS: PowerBankModel[] = [
     connection: 'C1',
     isShow: true,
     tempRange: '-20℃~60℃',
+    supportsQi2Toggle: true,
   },
   {
     id: 10,
@@ -80,6 +82,7 @@ export const POWER_BANK_MODELS: PowerBankModel[] = [
     connection: 'C1',
     isShow: false,
     tempRange: '-20℃~60℃',
+    supportsQi2Toggle: true,
   },
   {
     id: 18,

@@ -6,10 +6,13 @@ import {
   decodeCellStatus,
   decodeHello,
   decodeHistoryBatch,
+  decodeQi2Enable,
+  decodeQi2Status,
   decodeTempModel,
   historyFaultKey,
 } from '@/lib/protocol/decoders'
 import { parseBatteryId } from '@/lib/protocol/battery-id'
+import { findModelById } from '@/data/models'
 
 function u16(value: number): number[] {
   return [value & 0xff, (value >>> 8) & 0xff]
@@ -29,6 +32,7 @@ describe('hello decoder', () => {
     const hello = decodeHello(payload)
     expect(hello.modelId).toBe(9)
     expect(hello.model?.model).toBe('WPB1025S')
+    expect(hello.model?.supportsQi2Toggle).toBe(true)
     expect(hello.serialNumber).toBe('DMPB1025S0001')
     expect(hello.chargingStatusCode).toBe(1)
   })
@@ -141,6 +145,42 @@ describe('temperature model decoder', () => {
     expect(model.success).toBe(true)
     expect(model.range).toBe('-20℃~60℃')
     expect(model.batteryModel).toBe('436678B')
+  })
+})
+
+describe('Qi2.2 model gate', () => {
+  it('only enables the control for the 10000mAh 45W ultra-thin models', () => {
+    expect(findModelById(9)?.supportsQi2Toggle).toBe(true)
+    expect(findModelById(16)?.supportsQi2Toggle).toBe(true)
+    expect(findModelById(19)?.supportsQi2Toggle).toBe(true)
+    expect(findModelById(10)?.supportsQi2Toggle).not.toBe(true)
+    expect(findModelById(12)?.supportsQi2Toggle).not.toBe(true)
+  })
+})
+
+describe('Qi2.2 decoders', () => {
+  it('reads the enabled flag and status code', () => {
+    expect(decodeQi2Status(new Uint8Array([0, 1]))).toMatchObject({
+      statusCode: 0,
+      success: true,
+      enabled: true,
+    })
+    expect(decodeQi2Status(new Uint8Array([0, 0])).enabled).toBe(false)
+    expect(decodeQi2Status(new Uint8Array([1, 1]))).toMatchObject({
+      statusCode: 1,
+      success: false,
+      enabled: true,
+    })
+  })
+
+  it('decodes the set response and rejects empty payloads', () => {
+    expect(decodeQi2Enable(new Uint8Array([0]))).toMatchObject({
+      statusCode: 0,
+      success: true,
+    })
+    expect(decodeQi2Enable(new Uint8Array([2])).success).toBe(false)
+    expect(() => decodeQi2Status(new Uint8Array([0]))).toThrow('shorter than 2 bytes')
+    expect(() => decodeQi2Enable(new Uint8Array())).toThrow('empty')
   })
 })
 

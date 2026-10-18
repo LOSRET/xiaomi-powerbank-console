@@ -41,6 +41,18 @@ const errorModalOpen = computed(() => Boolean(store.errorModal))
   <ToastStack />
 
   <AppModal
+    :open="store.qi2ConfirmOpen"
+    :title="t(store.qi2PendingEnable ? 'modal.qi2Enable.title' : 'modal.qi2Disable.title')"
+    :body="t(store.qi2PendingEnable ? 'modal.qi2Enable.body' : 'modal.qi2Disable.body')"
+    :ok-text="t(store.qi2PendingEnable ? 'modal.qi2Enable.ok' : 'modal.qi2Disable.ok')"
+    :cancel-text="t('common.cancel')"
+    tone="warning"
+    icon="bolt"
+    @close="store.cancelQi2Toggle()"
+    @confirm="store.confirmQi2Toggle()"
+  />
+
+  <AppModal
     :open="store.disconnectConfirmOpen"
     :title="t('modal.disconnect.title')"
     :body="t('modal.disconnect.body')"

@@ -18,7 +18,6 @@ export const en: Record<MessageKey, string> = {
   'home.private': 'Data never leaves the browser',
   'home.demoLabel': 'No device?',
   'home.supportHint': 'Desktop Chrome, Edge or Opera required',
-  'home.connectedHint': 'Device connected. Live data is available on the right.',
   'home.refreshHint': 'Data comes from the device’s local storage. Refresh to read it again.',
   'home.openGuide': 'Open troubleshooting guide',
 
@@ -153,6 +152,12 @@ export const en: Record<MessageKey, string> = {
   'dashboard.dataErrorTitle': 'Could not read device data',
   'dashboard.dataErrorBody':
     'The device is connected but did not return battery info. Reconnect it, or make sure data transfer mode is enabled.',
+  'dashboard.qi2.title': 'Qi2.2 wireless charging',
+  'dashboard.qi2.enabled': 'On',
+  'dashboard.qi2.disabled': 'Off',
+  'dashboard.qi2.onHint': 'Qi2.2 25W wireless charging is active.',
+  'dashboard.qi2.offHint': 'Default wireless charging is active. You can enable Qi2.2 25W.',
+  'dashboard.qi2.unavailable': 'Could not read Qi2.2 status. Refresh to try again.',
 
   'status.charging': 'Charging',
   'status.discharging': 'Discharging',
@@ -185,17 +190,21 @@ export const en: Record<MessageKey, string> = {
   'empty.title': 'No power bank connected',
   'empty.body':
     'Device details, battery health and anomaly records will appear here after connecting.',
-  'empty.hint': 'No device? Open the demo data to take a look around.',
   'empty.details': 'Connect a device to view details',
-  'empty.exceptions': 'Connect a device to view the anomaly log',
-  'empty.connect': 'Connect',
-  'empty.demo': 'View demo',
 
   'modal.disconnect.title': 'Disconnect?',
   'modal.disconnect.body':
     'Disconnect? You will not be able to view power bank details after disconnecting.',
   'modal.disconnect.ok': 'Disconnect',
   'modal.disconnect.cancel': 'Cancel',
+  'modal.qi2Enable.title': 'Enable Qi2.2?',
+  'modal.qi2Enable.body':
+    'Only available on the Xiaomi UltraThin Magnetic Power Bank 10000 45W (WPB1025S / WPB1026S). Enabling switches wireless charging to Qi2.2 25W and may briefly interrupt it.',
+  'modal.qi2Enable.ok': 'Enable',
+  'modal.qi2Disable.title': 'Disable Qi2.2?',
+  'modal.qi2Disable.body':
+    'Wireless charging will return to the default mode and may be briefly interrupted.',
+  'modal.qi2Disable.ok': 'Disable',
   'modal.disconnected.title': 'Disconnected',
   'modal.disconnected.body': 'The power bank was disconnected and has exited data transfer mode.',
   'modal.disconnected.ok': 'OK',
@@ -265,7 +274,7 @@ export const en: Record<MessageKey, string> = {
   'guide.deviceLink': 'View device details',
   'guide.sideTitle': 'Safety note',
   'guide.sideBody':
-    'This tool only reads device state. It does not modify firmware or battery parameters. If anomalies occur frequently, contact Xiaomi support.',
+    'This tool reads device state by default; only WPB1025S / WPB1026S expose a Qi2.2 toggle. It does not modify firmware or battery parameters. If anomalies occur frequently, contact Xiaomi support.',
   'guide.relatedTitle': 'Related pages',
   'guide.relatedModels': 'Supported models and ports',
   'guide.relatedExceptions': 'Anomaly log',
@@ -283,6 +292,9 @@ export const en: Record<MessageKey, string> = {
   'toast.refreshFailed': 'Refresh failed. Try again.',
   'toast.demoExited': 'Demo mode closed',
   'toast.protocolCleared': 'Communication log cleared',
+  'toast.qi2Enabled': 'Qi2.2 enabled',
+  'toast.qi2Disabled': 'Qi2.2 disabled',
+  'toast.qi2Failed': 'Could not change Qi2.2. Try again.',
 
   'error.unsupported': 'WebHID is not supported in this browser',
   'error.noDeviceSelected': 'No device selected',
@@ -326,6 +338,7 @@ export const en: Record<MessageKey, string> = {
   'a11y.tabs': 'Device detail tabs',
   'a11y.footer': 'Footer',
   'a11y.demoBanner': 'Demo mode notice',
+  'a11y.qi2Toggle': 'Enable or disable Qi2.2 wireless charging',
 
   'unit.cycles': 'cycles',
   'unit.cycleSuffix': 'cycles',

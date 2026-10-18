@@ -4,6 +4,8 @@ import type {
   CellStatus,
   HelloInfo,
   HistoryRecord,
+  Qi2EnableResult,
+  Qi2Status,
   TempModelInfo,
 } from '@/types/device'
 import { findModelById } from '@/data/models'
@@ -136,6 +138,27 @@ export function decodeTempModel(payload: Uint8Array): TempModelInfo {
     lowTemp,
     range: highTemp !== null && lowTemp !== null ? `${lowTemp}℃~${highTemp}℃` : '--',
     batteryModel,
+  }
+}
+
+export function decodeQi2Status(payload: Uint8Array): Qi2Status {
+  if (payload.length < 2) throw new Error('Qi2.2 status response is shorter than 2 bytes')
+  const statusCode = payload[0] ?? 0
+  return {
+    statusCode,
+    success: statusCode === 0,
+    enabled: payload[1] === 1,
+    rawPayload: payload,
+  }
+}
+
+export function decodeQi2Enable(payload: Uint8Array): Qi2EnableResult {
+  if (payload.length < 1) throw new Error('Qi2.2 enable response is empty')
+  const statusCode = payload[0] ?? 0
+  return {
+    statusCode,
+    success: statusCode === 0,
+    rawPayload: payload,
   }
 }
 

@@ -5,6 +5,8 @@ import type {
   HelloInfo,
   HistoryRecord,
   ProtocolLogEntry,
+  Qi2EnableResult,
+  Qi2Status,
   TempModelInfo,
 } from '@/types/device'
 import { CMD, RESPONSE_CMD, TIMEOUT } from '@/lib/protocol/constants'
@@ -20,6 +22,8 @@ import {
   decodeCellStatus,
   decodeHello,
   decodeHistoryBatch,
+  decodeQi2Enable,
+  decodeQi2Status,
   decodeTempModel,
 } from '@/lib/protocol/decoders'
 import type { ParsedFrame } from '@/lib/protocol/types'
@@ -46,6 +50,8 @@ const CMD_LABELS: Record<number, string> = {
   [CMD.GET_HISTORY]: 'Get history',
   [CMD.GET_BATTERY_ID]: 'Get cell id',
   [CMD.DISCONNECT]: 'Disconnect',
+  [CMD.ENABLE_QI2]: 'Set Qi2.2',
+  [CMD.GET_QI2_STATUS]: 'Get Qi2.2 status',
   [CMD.HEARTBEAT]: 'Heartbeat',
   [CMD.GET_CELL_TEMP_MODEL]: 'Get temperature model',
   [RESPONSE_CMD.HELLO]: 'Hello response',
@@ -53,6 +59,8 @@ const CMD_LABELS: Record<number, string> = {
   [RESPONSE_CMD.CELL_STATUS]: 'Cell status response',
   [RESPONSE_CMD.HISTORY]: 'History response',
   [RESPONSE_CMD.BATTERY_ID]: 'Cell id response',
+  [RESPONSE_CMD.ENABLE_QI2]: 'Qi2.2 set response',
+  [RESPONSE_CMD.QI2_STATUS]: 'Qi2.2 status response',
   [RESPONSE_CMD.CELL_TEMP_MODEL]: 'Temperature model response',
 }
 
@@ -152,6 +160,22 @@ export class DeviceClient {
       TIMEOUT.COMMAND,
     )
     return decodeTempModel(payload)
+  }
+
+  async getQi2Status(): Promise<Qi2Status> {
+    const payload = await this.request(CMD.GET_QI2_STATUS, RESPONSE_CMD.QI2_STATUS, TIMEOUT.COMMAND)
+    return decodeQi2Status(payload)
+  }
+
+  async setQi2(enabled: boolean): Promise<Qi2EnableResult> {
+    const payload = new Uint8Array([enabled ? 1 : 0])
+    const response = await this.request(
+      CMD.ENABLE_QI2,
+      RESPONSE_CMD.ENABLE_QI2,
+      TIMEOUT.QI2_WRITE,
+      payload,
+    )
+    return decodeQi2Enable(response)
   }
 
   async getHistory(start: number, end: number): Promise<HistoryRecord[]> {

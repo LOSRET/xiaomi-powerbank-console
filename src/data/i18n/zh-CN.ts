@@ -13,7 +13,6 @@ export const zhCN = {
   'home.private': '数据不离开浏览器',
   'home.demoLabel': '没有设备？',
   'home.supportHint': '需要桌面版 Chrome、Edge 或 Opera',
-  'home.connectedHint': '设备已连接，可以在右侧查看实时数据。',
   'home.refreshHint': '数据来自设备本地存储，点击刷新可重新读取。',
   'home.openGuide': '查看异常处理说明',
 
@@ -136,6 +135,12 @@ export const zhCN = {
   'dashboard.dataErrorTitle': '无法读取设备数据',
   'dashboard.dataErrorBody':
     '设备已连接，但没有返回电池信息。请重新插拔，或确认充电宝已进入数据传输模式。',
+  'dashboard.qi2.title': 'Qi2.2 无线充电',
+  'dashboard.qi2.enabled': '已开启',
+  'dashboard.qi2.disabled': '未开启',
+  'dashboard.qi2.onHint': '当前使用 Qi2.2 25W 无线充电模式。',
+  'dashboard.qi2.offHint': '当前为默认无线充电模式，可开启 Qi2.2 25W。',
+  'dashboard.qi2.unavailable': '无法读取 Qi2.2 状态，请刷新重试。',
 
   'status.charging': '充电中',
   'status.discharging': '放电中',
@@ -167,16 +172,19 @@ export const zhCN = {
 
   'empty.title': '当前未连接移动电源',
   'empty.body': '连接后会在这里显示设备详情、电池健康度和异常记录。',
-  'empty.hint': '还没有设备？可以先打开演示数据。',
   'empty.details': '暂未连接无法获取详细信息',
-  'empty.exceptions': '暂未连接无法获取异常记录',
-  'empty.connect': '建立连接',
-  'empty.demo': '查看演示',
 
   'modal.disconnect.title': '断开连接？',
   'modal.disconnect.body': '确认断开连接？断开后将无法查看移动电源详情。',
   'modal.disconnect.ok': '确定',
   'modal.disconnect.cancel': '取消',
+  'modal.qi2Enable.title': '开启 Qi2.2？',
+  'modal.qi2Enable.body':
+    '仅支持小米金沙江充电宝 超薄磁吸 10000 45W（WPB1025S / WPB1026S）。开启后无线充电会切换到 Qi2.2 25W 模式，可能短暂中断。',
+  'modal.qi2Enable.ok': '开启',
+  'modal.qi2Disable.title': '关闭 Qi2.2？',
+  'modal.qi2Disable.body': '关闭后无线充电会回到默认模式，可能短暂中断。',
+  'modal.qi2Disable.ok': '关闭',
   'modal.disconnected.title': '已断开连接',
   'modal.disconnected.body': '移动电源已断开，设备会自动退出数据传输模式。',
   'modal.disconnected.ok': '知道了',
@@ -242,7 +250,7 @@ export const zhCN = {
   'guide.deviceLink': '查看设备详情',
   'guide.sideTitle': '安全提示',
   'guide.sideBody':
-    '本工具只读取设备状态，不会修改固件或电池参数。异常频繁出现时，请优先联系小米售后。',
+    '本工具默认只读取设备状态；仅在 WPB1025S / WPB1026S 上提供 Qi2.2 开关，不会修改固件或电池参数。异常频繁出现时，请优先联系小米售后。',
   'guide.relatedTitle': '相关页面',
   'guide.relatedModels': '支持型号与接口',
   'guide.relatedExceptions': '异常记录说明',
@@ -260,6 +268,9 @@ export const zhCN = {
   'toast.refreshFailed': '刷新失败，请重试',
   'toast.demoExited': '已退出演示模式',
   'toast.protocolCleared': '通信记录已清空',
+  'toast.qi2Enabled': 'Qi2.2 已开启',
+  'toast.qi2Disabled': 'Qi2.2 已关闭',
+  'toast.qi2Failed': 'Qi2.2 设置失败，请重试',
 
   'error.unsupported': '当前浏览器不支持 WebHID',
   'error.noDeviceSelected': '没有选择设备',
@@ -302,6 +313,7 @@ export const zhCN = {
   'a11y.tabs': '设备详情标签页',
   'a11y.footer': '页脚',
   'a11y.demoBanner': '演示模式提示',
+  'a11y.qi2Toggle': '开启或关闭 Qi2.2 无线充电',
 
   'unit.cycles': '次',
   'unit.cycleSuffix': '次',

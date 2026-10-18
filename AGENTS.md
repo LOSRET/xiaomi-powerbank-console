@@ -35,12 +35,13 @@
 - `formatDeviceTime` intentionally formats the device's Beijing wall-clock seconds as UTC. Changing it to browser-local time breaks history display.
 - Model quirks: `WPB1007ZX` hides cell serial and only exposes the first temperature sensor; its history before `1772323200` is filtered. Only model IDs `> 14` (and demo mode) request command `0x18`.
 - Battery/cell/history decoding is length-sensitive. Preserve signed/LE reads and the cell-count nibble formula; add decoder tests for any change.
+- The Qi2.2 toggle (`0x06` write / `0x07` status) is gated by `supportsQi2Toggle` on `WPB1025S` / `WPB1026S` only. Do not expose it for other models; it requires a confirmation modal and a status read-back.
 
 ## i18n And UX
 
 - Every user-visible string must be added to both `src/data/i18n/zh-CN.ts` and `en.ts`. `en.ts` is typed as `Record<MessageKey, string>`, so missing keys fail typecheck.
-- Keep `MockTransport` working for every command used by refresh/history; it is the only way to verify the UI without a physical power bank.
-- Read-only product boundary: no firmware/parameter writes, no arbitrary-command UI, no network calls or analytics.
+- Keep `MockTransport` working for every command used by refresh/history/Qi2; it is the only way to verify the UI without a physical power bank.
+- Read-only by default: no firmware/parameter writes except the model-gated Qi2.2 enable/disable control (`0x06`) for `WPB1025S` / `WPB1026S`; no arbitrary-command UI, no network calls or analytics.
 
 ## Testing And Deployment
 

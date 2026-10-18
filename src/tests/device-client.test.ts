@@ -32,6 +32,15 @@ describe('DeviceClient with the demo transport', () => {
     const temperature = await client.getTempModel()
     expect(temperature.range).toBe('-20℃~60℃')
 
+    const qi2 = await client.getQi2Status()
+    expect(qi2.enabled).toBe(false)
+    const enableResult = await client.setQi2(true)
+    expect(enableResult.success).toBe(true)
+    expect((await client.getQi2Status()).enabled).toBe(true)
+    const disableResult = await client.setQi2(false)
+    expect(disableResult.success).toBe(true)
+    expect((await client.getQi2Status()).enabled).toBe(false)
+
     const history = await client.getHistory(1, 7)
     expect(history).toHaveLength(3)
     expect(history[0]?.errorType).toBe(3)

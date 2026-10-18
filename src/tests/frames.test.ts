@@ -25,6 +25,17 @@ describe('frames', () => {
     expect(Array.from(frame.subarray(5)).every((byte) => byte === 0)).toBe(true)
   })
 
+  it('builds the Qi2.2 status and enable frames', () => {
+    const status = buildCommandFrame(CMD.GET_QI2_STATUS)
+    expect(bytesToHex(status.subarray(0, 4))).toBe('A50700E3')
+
+    const enable = buildCommandFrame(CMD.ENABLE_QI2, new Uint8Array([1]))
+    expect(bytesToHex(enable.subarray(0, 5))).toBe('A5060101DE')
+
+    const disable = buildCommandFrame(CMD.ENABLE_QI2, new Uint8Array([0]))
+    expect(bytesToHex(disable.subarray(0, 5))).toBe('A5060100D9')
+  })
+
   it('builds the special Hello frame', () => {
     const now = Date.UTC(2026, 8, 12, 12, 0, 0)
     const frame = buildHelloFrame(now)

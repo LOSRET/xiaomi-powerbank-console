@@ -70,6 +70,7 @@ const temperatureTone = computed(() => {
 })
 const faultLabelKey = computed(() => faultKey(battery.value?.faultType ?? 0))
 const firstCellParsed = computed(() => Object.values(store.cellIds).find((id) => id.parsed)?.parsed)
+const qi2Enabled = computed(() => store.qi2Status?.enabled === true)
 
 const basicItems = computed<DataItem[]>(() => {
   const items: DataItem[] = [
@@ -217,7 +218,7 @@ function disconnect(): void {
         <button
           type="button"
           class="icon-button"
-          :disabled="store.refreshing"
+          :disabled="store.refreshing || store.qi2Toggling"
           :aria-label="t('a11y.refresh')"
           @click="refresh"
         >
@@ -271,6 +272,53 @@ function disconnect(): void {
           :hint="`${formatCurrent(battery.current)} · ${t('dashboard.current')}`"
         />
       </div>
+    </section>
+
+    <section v-if="store.supportsQi2Toggle" class="qi2-panel" :class="{ 'is-on': qi2Enabled }">
+      <span class="qi2-panel__icon" aria-hidden="true">
+        <Icon name="bolt" :size="19" />
+      </span>
+      <div class="qi2-panel__copy">
+        <div class="qi2-panel__title-row">
+          <h3>{{ t('dashboard.qi2.title') }}</h3>
+          <span
+            v-if="store.qi2Status"
+            class="pill"
+            :class="qi2Enabled ? 'pill--success' : 'pill--neutral'"
+          >
+            {{ t(qi2Enabled ? 'dashboard.qi2.enabled' : 'dashboard.qi2.disabled') }}
+          </span>
+        </div>
+        <p v-if="store.qi2Status">
+          {{ t(qi2Enabled ? 'dashboard.qi2.onHint' : 'dashboard.qi2.offHint') }}
+        </p>
+        <p v-else>
+          {{ store.qi2Loading ? t('common.loading') : t('dashboard.qi2.unavailable') }}
+        </p>
+      </div>
+      <button
+        v-if="store.qi2Status"
+        type="button"
+        role="switch"
+        class="qi2-switch"
+        :class="{ 'is-on': qi2Enabled }"
+        :aria-checked="qi2Enabled"
+        :aria-label="t('a11y.qi2Toggle')"
+        :disabled="store.qi2Toggling || store.refreshing"
+        @click="store.requestQi2Toggle(!qi2Enabled)"
+      >
+        <span v-if="store.qi2Toggling" class="spinner" aria-hidden="true"></span>
+        <span v-else class="qi2-switch__thumb" aria-hidden="true"></span>
+      </button>
+      <button
+        v-else
+        type="button"
+        class="btn btn--ghost qi2-panel__retry"
+        :disabled="store.qi2Loading || store.refreshing"
+        @click="store.reloadQi2Status()"
+      >
+        {{ t('common.retry') }}
+      </button>
     </section>
 
     <div class="device-panel__tabs" role="tablist" :aria-label="t('a11y.tabs')">
@@ -496,10 +544,11 @@ function disconnect(): void {
 
 .device-panel__overview {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: clamp(22px, 4vw, 48px);
+  gap: clamp(18px, 2.5vw, 28px);
   margin-top: 26px;
-  padding: 26px 20px 24px;
+  padding: 28px 20px 24px;
   border: 1px solid var(--color-line);
   border-radius: var(--radius-md);
   background: linear-gradient(135deg, #fbfcfe 0%, var(--color-surface-muted) 100%);
@@ -508,10 +557,126 @@ function disconnect(): void {
 .device-panel__metrics {
   display: grid;
   width: 100%;
-  max-width: 480px;
-  flex: 1;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 9px;
+}
+
+.qi2-panel {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 16px;
+  padding: 14px 16px;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-md);
+  background: linear-gradient(135deg, #fbfcfe 0%, var(--color-surface-muted) 100%);
+}
+
+.qi2-panel.is-on {
+  border-color: #cfe9df;
+  background: linear-gradient(135deg, #fbfefc 0%, var(--color-success-soft) 100%);
+}
+
+.qi2-panel__icon {
+  display: grid;
+  width: 38px;
+  height: 38px;
+  flex: 0 0 auto;
+  place-items: center;
+  border-radius: 12px;
+  color: var(--color-energy);
+  background: var(--color-energy-soft);
+}
+
+.qi2-panel.is-on .qi2-panel__icon {
+  color: var(--color-success);
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.qi2-panel__copy {
+  flex: 1;
+  min-width: 0;
+}
+
+.qi2-panel__title-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.qi2-panel__title-row h3 {
+  font-size: 0.84rem;
+  font-weight: 650;
+}
+
+.qi2-panel__copy p {
+  margin-top: 4px;
+  color: var(--color-muted);
+  font-size: 0.72rem;
+  line-height: 1.5;
+}
+
+.qi2-switch {
+  position: relative;
+  display: inline-flex;
+  width: 46px;
+  height: 26px;
+  flex: 0 0 auto;
+  align-items: center;
+  padding: 3px;
+  border-radius: 999px;
+  background: var(--color-line-strong);
+  transition: background var(--transition-fast);
+}
+
+.qi2-switch:hover:not(:disabled) {
+  background: #b6c2d2;
+}
+
+.qi2-switch.is-on {
+  background: var(--color-success);
+}
+
+.qi2-switch.is-on:hover:not(:disabled) {
+  background: #0a7f59;
+}
+
+.qi2-switch:focus-visible {
+  outline: 2px solid var(--color-brand);
+  outline-offset: 2px;
+}
+
+.qi2-switch:disabled {
+  cursor: wait;
+  opacity: 0.6;
+}
+
+.qi2-switch__thumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(16, 24, 40, 0.28);
+  transition: transform var(--transition-fast);
+}
+
+.qi2-switch.is-on .qi2-switch__thumb {
+  transform: translateX(20px);
+}
+
+.qi2-switch .spinner {
+  width: 14px;
+  height: 14px;
+  margin: auto;
+  color: #fff;
+}
+
+.qi2-panel__retry {
+  min-height: 34px;
+  flex: 0 0 auto;
+  padding-inline: 12px;
+  font-size: 0.72rem;
 }
 
 .device-panel__tabs {
@@ -621,13 +786,8 @@ function disconnect(): void {
 }
 
 @media (max-width: 980px) {
-  .device-panel__overview {
-    align-items: flex-start;
-    flex-direction: column;
-  }
-
   .device-panel__metrics {
-    max-width: none;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
