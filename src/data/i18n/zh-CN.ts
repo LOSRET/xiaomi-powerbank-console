@@ -22,7 +22,7 @@ export const zhCN = {
     '覆盖小米金沙江磁吸充电宝、自带线充电宝等型号。使用指定 USB-C 口，并在 4 秒内连续按 8 次按键进入数据传输模式。',
   'home.aboutPrivacyTitle': '数据仅在本机处理',
   'home.aboutPrivacyBody':
-    '没有后端、没有遥测，设备数据不会上传。默认只发送读取命令；仅 WPB1025S 提供 Qi2.2 开关。',
+    '没有后端，设备数据不会上传。默认只发送读取命令；仅 WPB1025S 提供 Qi2.2 开关。页面访问量由第三方统计脚本匿名统计，不采集设备数据。',
   'home.aboutModels': '查看支持型号与接口',
   'home.aboutGuide': '阅读异常处理指引',
 
@@ -236,7 +236,7 @@ export const zhCN = {
   'error.unsupported': '当前浏览器不支持 WebHID',
 
   'footer.note': '非官方工具，协议来自公开网页的 WebHID 行为分析。',
-  'footer.privacy': '数据只在浏览器内处理，不会上传到服务器。',
+  'footer.privacy': '设备数据只在浏览器内处理，不会上传到服务器；仅统计匿名页面访问量。',
   'footer.models': '支持型号',
   'footer.guide': '异常指引',
   'footer.original': '原站',

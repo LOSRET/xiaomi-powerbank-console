@@ -2,7 +2,7 @@
 
 ## Project
 
-- Static Vue 3 + Vite SPA that reads Xiaomi power banks over WebHID. No backend, no telemetry; keep device data local.
+- Static Vue 3 + Vite SPA that reads Xiaomi power banks over WebHID. No backend; keep device data local. A third-party page-view analytics script (`https://u.7471.top/script.js`) is loaded from `index.html` — it only counts page views and must never receive device data.
 - Protocol was reverse-engineered from `powerbank.mieco.net`. Read `docs/REVERSE_ENGINEERING.md` before changing CRC, frames, commands, decoders, model tables, or battery-ID parsing.
 - Public repo: `LOSRET/xiaomi-powerbank-console`, branch `main`. Deploy target is Cloudflare Pages (`dist`). The user handles deployment.
 
@@ -41,7 +41,7 @@
 
 - Every user-visible string must be added to both `src/data/i18n/zh-CN.ts` and `en.ts`. `en.ts` is typed as `Record<MessageKey, string>`, so missing keys fail typecheck.
 - Keep `MockTransport` working for every command used by refresh/history/Qi2; it is the only way to verify the UI without a physical power bank.
-- Read-only by default: no firmware/parameter writes except the model-gated Qi2.2 enable/disable control (`0x06`) for `WPB1025S`; no arbitrary-command UI, no network calls or analytics.
+- Read-only by default: no firmware/parameter writes except the model-gated Qi2.2 enable/disable control (`0x06`) for `WPB1025S`; no arbitrary-command UI, and no application-level network calls besides the third-party page-view analytics script in `index.html`.
 
 ## Testing And Deployment
 

@@ -26,7 +26,7 @@ export const en: Record<MessageKey, string> = {
     'Supports Xiaomi magnetic and integrated-cable power banks. Use the designated USB-C port and press the power bank button 8 times within 4 seconds to enter data transfer mode.',
   'home.aboutPrivacyTitle': 'Processed locally',
   'home.aboutPrivacyBody':
-    'No backend and no telemetry. Device data is never uploaded. Only read commands are sent by default; Qi2.2 switching is limited to WPB1025S.',
+    'No backend, and device data is never uploaded. Only read commands are sent by default; Qi2.2 switching is limited to WPB1025S. Page views are counted anonymously by a third-party script that never reads device data.',
   'home.aboutModels': 'View supported models and ports',
   'home.aboutGuide': 'Read the troubleshooting guide',
 
@@ -259,7 +259,8 @@ export const en: Record<MessageKey, string> = {
   'error.unsupported': 'WebHID is not supported in this browser',
 
   'footer.note': 'Unofficial tool. Protocol derived from public WebHID behavior analysis.',
-  'footer.privacy': 'Data stays in this browser and is never uploaded.',
+  'footer.privacy':
+    'Device data stays in this browser and is never uploaded; only anonymous page views are counted.',
   'footer.models': 'Supported models',
   'footer.guide': 'Troubleshooting',
   'footer.original': 'Original site',
