@@ -16,6 +16,10 @@ export function formatPercent(value: number): string {
   return `${value}%`
 }
 
+export function formatTempRange(lowTemp: number, highTemp: number): string {
+  return `${lowTemp}℃~${highTemp}℃`
+}
+
 /**
  * The device stores Beijing wall-clock time in the low 32 bits. The original
  * implementation displays the raw value with a fixed UTC+8 offset, so format

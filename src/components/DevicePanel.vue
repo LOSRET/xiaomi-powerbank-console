@@ -2,13 +2,8 @@
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 import { useI18n } from '@/composables/useI18n'
 import { useDeviceStore } from '@/stores/device'
-import { faultKey } from '@/lib/protocol/decoders'
-import {
-  formatCurrent,
-  formatPercent,
-  formatRelativeTime,
-  formatVoltage,
-} from '@/lib/protocol/formatting'
+import { chargeStateVisual, faultKey } from '@/lib/labels'
+import { formatCurrent, formatPercent, formatRelativeTime, formatVoltage } from '@/lib/formatting'
 import type { DataItem } from '@/types/ui'
 import Icon from './Icon.vue'
 import PowerBankVisual from './PowerBankVisual.vue'
@@ -40,18 +35,7 @@ onBeforeUnmount(() => {
 
 const battery = computed(() => store.battery)
 const isConnected = computed(() => store.isConnected)
-const visualStatus = computed(() => {
-  switch (battery.value?.chargeState) {
-    case 0:
-      return 'discharging'
-    case 1:
-      return 'charging'
-    case 2:
-      return 'idle'
-    default:
-      return 'unknown'
-  }
-})
+const visualStatus = computed(() => chargeStateVisual(battery.value?.chargeState))
 const updatedLabel = computed(() => {
   void now.value
   return store.lastUpdated ? formatRelativeTime(store.lastUpdated, lang.value) : '--'

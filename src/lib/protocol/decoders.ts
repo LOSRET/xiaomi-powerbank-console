@@ -136,7 +136,6 @@ export function decodeTempModel(payload: Uint8Array): TempModelInfo {
     success,
     highTemp,
     lowTemp,
-    range: highTemp !== null && lowTemp !== null ? `${lowTemp}℃~${highTemp}℃` : '--',
     batteryModel,
   }
 }
@@ -195,75 +194,4 @@ export function decodeHistoryBatch(payload: Uint8Array): HistoryBatch {
   }
 
   return { statusCode, records }
-}
-
-export function chargeStateKey(code: number): string {
-  switch (code) {
-    case 0:
-      return 'status.discharging'
-    case 1:
-      return 'status.charging'
-    case 2:
-      return 'status.idle'
-    default:
-      return 'status.unknown'
-  }
-}
-
-export function faultKey(code: number): string {
-  switch (code) {
-    case 0:
-      return 'fault.normal'
-    case 1:
-      return 'fault.overvoltage'
-    case 2:
-      return 'fault.undervoltage'
-    case 3:
-      return 'fault.dischargeHighTemperature'
-    case 4:
-      return 'fault.dischargeLowTemperature'
-    case 5:
-      return 'fault.chargeHighTemperature'
-    case 6:
-      return 'fault.chargeLowTemperature'
-    case 7:
-      return 'fault.shortCircuit'
-    case 8:
-      return 'fault.mos'
-    case 9:
-      return 'fault.afe'
-    default:
-      return 'fault.unknown'
-  }
-}
-
-export function historyFaultKey(errorType: number, chargeState: number): string {
-  switch (errorType) {
-    case 0:
-      return 'fault.normal'
-    case 1:
-      return 'fault.cellOvervoltage'
-    case 2:
-      return 'fault.cellUndervoltage'
-    case 3:
-      return chargeState === 0x80
-        ? 'fault.idleHighTemperature'
-        : chargeState === 0x40
-          ? 'fault.chargeHighTemperature'
-          : 'fault.dischargeHighTemperature'
-    case 4:
-      return chargeState === 0x40 ? 'fault.chargeLowTemperature' : 'fault.dischargeLowTemperature'
-    case 5:
-      return 'fault.overCurrent'
-    case 6:
-      return 'fault.shortCircuit'
-    case 7:
-      return 'fault.cellVoltageDifference'
-    case 8:
-      return 'fault.mos'
-    case 9:
-      return 'fault.afe'
-    default:
-      return 'fault.unknown'
-  }
 }

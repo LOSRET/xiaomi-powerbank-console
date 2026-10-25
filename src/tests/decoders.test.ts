@@ -1,6 +1,5 @@
 import { describe, expect, it } from 'vitest'
 import {
-  chargeStateKey,
   decodeBatteryId,
   decodeBatteryInfo,
   decodeCellStatus,
@@ -9,7 +8,6 @@ import {
   decodeQi2Enable,
   decodeQi2Status,
   decodeTempModel,
-  historyFaultKey,
 } from '@/lib/protocol/decoders'
 import { parseBatteryId } from '@/lib/protocol/battery-id'
 import { findModelById } from '@/data/models'
@@ -68,7 +66,6 @@ describe('battery info decoder', () => {
     expect(info.temperature).toBe(29)
     expect(info.voltage).toBe(7700)
     expect(info.current).toBe(1180)
-    expect(chargeStateKey(info.chargeState)).toBe('status.charging')
   })
 
   it('reads signed temperatures and currents', () => {
@@ -143,7 +140,8 @@ describe('temperature model decoder', () => {
 
     const model = decodeTempModel(payload)
     expect(model.success).toBe(true)
-    expect(model.range).toBe('-20℃~60℃')
+    expect(model.highTemp).toBe(60)
+    expect(model.lowTemp).toBe(-20)
     expect(model.batteryModel).toBe('436678B')
   })
 })
@@ -208,8 +206,5 @@ describe('history decoder', () => {
       errorType: 3,
       value: 46,
     })
-    expect(historyFaultKey(3, 0x40)).toBe('fault.chargeHighTemperature')
-    expect(historyFaultKey(3, 0x80)).toBe('fault.idleHighTemperature')
-    expect(historyFaultKey(1, 0x40)).toBe('fault.cellOvervoltage')
   })
 })

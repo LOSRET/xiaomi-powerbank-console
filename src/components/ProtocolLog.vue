@@ -3,7 +3,7 @@ import { computed, ref } from 'vue'
 import { useI18n } from '@/composables/useI18n'
 import { useDeviceStore } from '@/stores/device'
 import { useToast } from '@/composables/useToast'
-import { formatClock, formatHexInteger } from '@/lib/protocol/formatting'
+import { formatClock, formatHexInteger } from '@/lib/formatting'
 import Icon from './Icon.vue'
 
 const store = useDeviceStore()

@@ -100,7 +100,6 @@ export interface TempModelInfo {
   success: boolean
   highTemp: number | null
   lowTemp: number | null
-  range: string
   batteryModel: string
 }
 

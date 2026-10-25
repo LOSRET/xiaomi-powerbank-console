@@ -2,7 +2,7 @@
 import { computed } from 'vue'
 import type { BatteryIdInfo, BatteryInfo, CellStatus } from '@/types/device'
 import { useI18n } from '@/composables/useI18n'
-import { formatVoltage } from '@/lib/protocol/formatting'
+import { formatVoltage } from '@/lib/formatting'
 
 const props = defineProps<{
   battery: BatteryInfo | null

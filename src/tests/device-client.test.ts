@@ -30,7 +30,8 @@ describe('DeviceClient with the demo transport', () => {
     expect(id.parsed?.miCodeInfo.cellModel).toBe('436678B')
 
     const temperature = await client.getTempModel()
-    expect(temperature.range).toBe('-20℃~60℃')
+    expect(temperature.highTemp).toBe(60)
+    expect(temperature.lowTemp).toBe(-20)
 
     const qi2 = await client.getQi2Status()
     expect(qi2.enabled).toBe(false)

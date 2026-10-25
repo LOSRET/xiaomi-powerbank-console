@@ -1,5 +1,7 @@
 import type { Lang, PowerBankModel } from '@/types/device'
 
+export const DEFAULT_TEMP_RANGE = '-20℃~60℃'
+
 /**
  * Supported models exposed by the original detail page. `isShow` controls the
  * public model list; hidden entries are still used to identify a connected
@@ -13,7 +15,7 @@ const POWER_BANK_MODELS: PowerBankModel[] = [
     model: 'WPB1025S',
     connection: 'C1',
     isShow: true,
-    tempRange: '-20℃~60℃',
+    tempRange: DEFAULT_TEMP_RANGE,
     supportsQI2: false,
     supportsQi2Toggle: true,
   },
@@ -24,7 +26,7 @@ const POWER_BANK_MODELS: PowerBankModel[] = [
     model: 'WPB1026S',
     connection: 'C1',
     isShow: true,
-    tempRange: '-20℃~60℃',
+    tempRange: DEFAULT_TEMP_RANGE,
     // WPB1026S is read-only here; the Qi2.2 toggle is only enabled for WPB1025S.
   },
   {
@@ -34,7 +36,7 @@ const POWER_BANK_MODELS: PowerBankModel[] = [
     model: 'WPB0525S',
     connection: 'C1',
     isShow: true,
-    tempRange: '-20℃~60℃',
+    tempRange: DEFAULT_TEMP_RANGE,
     supportsQI2: false,
   },
   {
@@ -44,7 +46,7 @@ const POWER_BANK_MODELS: PowerBankModel[] = [
     model: 'WPB1007ZX',
     connection: 'C2',
     isShow: true,
-    tempRange: '-20℃~60℃',
+    tempRange: DEFAULT_TEMP_RANGE,
   },
   {
     id: 12,
@@ -53,7 +55,7 @@ const POWER_BANK_MODELS: PowerBankModel[] = [
     model: 'WPB1025',
     connection: 'C2',
     isShow: true,
-    tempRange: '-20℃~60℃',
+    tempRange: DEFAULT_TEMP_RANGE,
     supportsQI2: true,
   },
   {
@@ -63,7 +65,7 @@ const POWER_BANK_MODELS: PowerBankModel[] = [
     model: 'PB2045MI',
     connection: 'C2',
     isShow: true,
-    tempRange: '-20℃~60℃',
+    tempRange: DEFAULT_TEMP_RANGE,
   },
   {
     id: 5,
@@ -72,7 +74,7 @@ const POWER_BANK_MODELS: PowerBankModel[] = [
     model: 'PB2067MI',
     connection: 'C2',
     isShow: true,
-    tempRange: '-20℃~60℃',
+    tempRange: DEFAULT_TEMP_RANGE,
   },
   {
     id: 19,
@@ -81,7 +83,7 @@ const POWER_BANK_MODELS: PowerBankModel[] = [
     model: 'WPB1025S',
     connection: 'C1',
     isShow: false,
-    tempRange: '-20℃~60℃',
+    tempRange: DEFAULT_TEMP_RANGE,
     supportsQi2Toggle: true,
   },
   {
@@ -91,7 +93,7 @@ const POWER_BANK_MODELS: PowerBankModel[] = [
     model: 'PB2021',
     connection: 'C2',
     isShow: true,
-    tempRange: '-20℃~60℃',
+    tempRange: DEFAULT_TEMP_RANGE,
   },
   {
     id: 14,
@@ -100,7 +102,7 @@ const POWER_BANK_MODELS: PowerBankModel[] = [
     model: 'PB2020',
     connection: 'C2',
     isShow: true,
-    tempRange: '-20℃~60℃',
+    tempRange: DEFAULT_TEMP_RANGE,
   },
   {
     id: 13,
@@ -109,7 +111,7 @@ const POWER_BANK_MODELS: PowerBankModel[] = [
     model: 'P15',
     connection: 'C2',
     isShow: true,
-    tempRange: '-20℃~60℃',
+    tempRange: DEFAULT_TEMP_RANGE,
   },
   {
     id: 17,
@@ -118,7 +120,7 @@ const POWER_BANK_MODELS: PowerBankModel[] = [
     model: 'P17',
     connection: 'C2',
     isShow: true,
-    tempRange: '-20℃~60℃',
+    tempRange: DEFAULT_TEMP_RANGE,
   },
   {
     id: 1,
@@ -127,7 +129,7 @@ const POWER_BANK_MODELS: PowerBankModel[] = [
     model: 'PB1067MI',
     connection: 'C2',
     isShow: true,
-    tempRange: '-20℃~60℃',
+    tempRange: DEFAULT_TEMP_RANGE,
   },
   {
     id: 7,
@@ -136,7 +138,7 @@ const POWER_BANK_MODELS: PowerBankModel[] = [
     model: 'NPB1055R',
     connection: 'C2',
     isShow: true,
-    tempRange: '-20℃~60℃',
+    tempRange: DEFAULT_TEMP_RANGE,
   },
   {
     id: 6,

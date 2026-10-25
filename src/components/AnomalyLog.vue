@@ -2,13 +2,8 @@
 import { computed, onMounted, ref, watch } from 'vue'
 import { useI18n } from '@/composables/useI18n'
 import { useDeviceStore } from '@/stores/device'
-import { historyFaultKey } from '@/lib/protocol/decoders'
-import {
-  formatCurrent,
-  formatDeviceTime,
-  formatTemperature,
-  formatVoltage,
-} from '@/lib/protocol/formatting'
+import { historyFaultKey, historyValueLabel } from '@/lib/labels'
+import { formatDeviceTime } from '@/lib/formatting'
 import type { HistoryRecord } from '@/types/device'
 import Icon from './Icon.vue'
 
@@ -34,22 +29,6 @@ function typeLabel(record: HistoryRecord): string {
   return t(historyFaultKey(record.errorType, record.chargeState), {
     cellId: record.cellId,
   })
-}
-
-function valueLabel(record: HistoryRecord): string {
-  if (record.errorType === 1 || record.errorType === 2) {
-    return formatVoltage(record.value)
-  }
-  if (record.errorType === 3 || record.errorType === 4) {
-    return formatTemperature(record.value)
-  }
-  if (record.errorType === 5) {
-    return record.value > 100 ? formatCurrent(record.value) : `${record.value} A`
-  }
-  if (record.errorType === 7) {
-    return `${record.value} mV`
-  }
-  return String(record.value)
 }
 
 function previous(): void {
@@ -90,7 +69,7 @@ function next(): void {
             >
               <td class="anomaly__time tabular">{{ formatDeviceTime(record.timestamp, lang) }}</td>
               <td>{{ typeLabel(record) }}</td>
-              <td class="tabular">{{ valueLabel(record) }}</td>
+              <td class="tabular">{{ historyValueLabel(record) }}</td>
             </tr>
           </tbody>
         </table>

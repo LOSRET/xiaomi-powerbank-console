@@ -17,7 +17,9 @@ import { MockTransport } from '@/lib/hid/mock-transport'
 import { WebHidTransport } from '@/lib/hid/webhid-transport'
 import { useI18n } from '@/composables/useI18n'
 import { useToast } from '@/composables/useToast'
-import { chargeStateKey } from '@/lib/protocol/decoders'
+import { chargeStateKey } from '@/lib/labels'
+import { formatTempRange } from '@/lib/formatting'
+import { DEFAULT_TEMP_RANGE } from '@/data/models'
 
 const HISTORY_PAGE_SIZE = 7
 const MAX_HISTORY = 100
@@ -83,8 +85,11 @@ export const useDeviceStore = defineStore('device', () => {
     battery.value ? chargeStateKey(battery.value.chargeState) : 'status.unknown',
   )
   const temperatureRange = computed(() => {
-    if (tempModel.value?.success && tempModel.value.range !== '--') return tempModel.value.range
-    return activeModel.value?.tempRange ?? '-20℃~60℃'
+    const temp = tempModel.value
+    if (temp?.success && temp.highTemp !== null && temp.lowTemp !== null) {
+      return formatTempRange(temp.lowTemp, temp.highTemp)
+    }
+    return activeModel.value?.tempRange ?? DEFAULT_TEMP_RANGE
   })
   const temperatureSensors = computed(() => {
     const withSensors = cells.value.filter((cell) => cell.hasTemperatureSensor)

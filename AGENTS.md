@@ -22,6 +22,7 @@
 - `src/stores/device.ts` is the single owner of connection state, retries, heartbeat, history loading, and logs. Components must call store actions; do not send HID commands or re-implement decoding in components.
 - HID layer: `src/lib/hid/webhid-transport.ts` (real device), `mock-transport.ts` (demo), `device-client.ts` (request/response correlation), `heartbeat.worker.ts` (background heartbeat).
 - Protocol layer: `src/lib/protocol/` — `frames.ts`, `decoders.ts`, `crc8.ts`, `battery-id.ts`, `constants.ts`.
+- Presentation helpers: `src/lib/formatting.ts` (unit/date/value formatting) and `src/lib/labels.ts` (device status/fault codes → i18n keys, charge visual status, history value labels). Keep i18n vocabulary and display strings out of `src/lib/protocol/`; the label-key functions return `MessageKey`, so typecheck validates them against the dictionaries.
 - Protocol data: `src/data/models.ts` and `src/data/batteryIdMaps.ts`.
 - UI: `ConnectCard.vue` (connect/how-to), `DevicePanel.vue` (connected dashboard), `HomeView.vue` (layout), plus models and troubleshooting views. `@/` aliases `src/`.
 
