@@ -116,7 +116,7 @@ function close(): void {
   width: min(440px, 100%);
   padding: 28px;
   border: 1px solid var(--color-line);
-  border-radius: 28px;
+  border-radius: var(--radius-lg);
   background: var(--color-surface);
   box-shadow: 0 32px 80px -36px rgba(16, 24, 40, 0.6);
   outline: none;

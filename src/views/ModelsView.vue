@@ -20,7 +20,7 @@ const filteredModels = computed(() => {
 </script>
 
 <template>
-  <div class="models-page page-shell">
+  <div class="models-page page-view page-shell">
     <div class="page-intro">
       <RouterLink to="/" class="back-link">
         <Icon name="arrow-left" :size="15" />
@@ -101,54 +101,8 @@ const filteredModels = computed(() => {
 </template>
 
 <style scoped>
-.models-page {
-  padding-top: clamp(26px, 4vw, 48px);
-}
-
-.page-intro {
-  max-width: 760px;
-  margin-bottom: 26px;
-}
-
-.back-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  margin-bottom: 24px;
-  color: var(--color-muted);
-  font-size: 0.78rem;
-  font-weight: 550;
-  transition: color var(--transition-fast);
-}
-
-.back-link:hover {
-  color: var(--color-brand-strong);
-}
-
-.page-intro__title-row {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  margin-top: 10px;
-  flex-wrap: wrap;
-}
-
-.page-intro h1 {
-  font-size: clamp(2rem, 4vw, 3rem);
-  font-weight: 640;
-  letter-spacing: -0.05em;
-}
-
-.page-intro__body {
-  max-width: 56ch;
-  margin-top: 12px;
-  color: var(--color-muted);
-  font-size: 0.9rem;
-  line-height: 1.65;
-}
-
 .models-card {
-  padding: clamp(22px, 3vw, 34px);
+  padding: var(--card-pad);
 }
 
 .models-card__toolbar {
@@ -232,7 +186,7 @@ const filteredModels = computed(() => {
 }
 
 .models-table__row:hover {
-  background: #fbfcff;
+  background: var(--color-surface-muted);
 }
 
 .models-table__row:last-of-type {
@@ -280,7 +234,7 @@ const filteredModels = computed(() => {
   padding: 12px;
   border-radius: var(--radius-xs);
   background: var(--color-brand-soft);
-  color: #3e5f9e;
+  color: var(--color-brand-ink);
   font-size: 0.73rem;
   line-height: 1.55;
 }
@@ -309,15 +263,21 @@ const filteredModels = computed(() => {
   }
 
   .models-table__row > :nth-child(n + 3) {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
     grid-column: 2;
   }
 
   .models-table__row > :nth-child(n + 3)::before {
-    display: inline-block;
-    min-width: 74px;
+    flex: 0 0 112px;
     color: var(--color-faint);
     content: attr(data-label);
     font-size: 0.67rem;
+  }
+
+  :lang(en) .models-table__row > :nth-child(n + 3)::before {
+    flex-basis: 128px;
   }
 
   .models-table__name {
@@ -328,12 +288,6 @@ const filteredModels = computed(() => {
     font-size: 0.74rem;
   }
 
-  .models-table__model::before,
-  .models-table__row > :nth-child(4)::before,
-  .models-table__temp::before {
-    content: attr(data-label);
-  }
-
   .models-card__toolbar {
     align-items: flex-start;
     flex-direction: column;
@@ -341,6 +295,14 @@ const filteredModels = computed(() => {
 
   .search {
     width: 100%;
+  }
+}
+
+@media (max-width: 380px) {
+  .models-table__row > :nth-child(n + 3) {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 2px;
   }
 }
 </style>

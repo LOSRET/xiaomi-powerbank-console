@@ -32,13 +32,13 @@ withDefaults(
 
 .data-list--2 {
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  column-gap: clamp(18px, 4vw, 48px);
+  column-gap: clamp(24px, 3vw, 40px);
 }
 
 .data-list__item {
   display: grid;
   min-width: 0;
-  grid-template-columns: minmax(92px, 0.42fr) minmax(0, 1fr);
+  grid-template-columns: 136px minmax(0, 1fr);
   gap: 12px;
   padding: 12px 0;
   border-bottom: 1px solid var(--color-line);
@@ -74,7 +74,7 @@ withDefaults(
   }
 
   .data-list__item {
-    grid-template-columns: minmax(86px, 0.4fr) minmax(0, 1fr);
+    grid-template-columns: 104px minmax(0, 1fr);
   }
 }
 </style>

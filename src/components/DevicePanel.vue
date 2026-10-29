@@ -61,7 +61,6 @@ const basicItems = computed<DataItem[]>(() => {
     {
       label: t('dashboard.productName'),
       value: isEnglish.value ? store.productNameEn : store.productName,
-      wide: true,
     },
     {
       label: t('dashboard.productModel'),
@@ -81,7 +80,6 @@ const basicItems = computed<DataItem[]>(() => {
       ? t('dashboard.noSerial')
       : store.serialNumber || t('dashboard.serialUnavailable'),
     mono: !store.isWPB1007ZX,
-    wide: true,
   })
 
   return items
@@ -343,7 +341,7 @@ function disconnect(): void {
         <div class="detail-block__head">
           <h3>{{ t('dashboard.basicInfo') }}</h3>
         </div>
-        <DataList :items="basicItems" />
+        <DataList :items="basicItems" :columns="1" />
       </section>
 
       <section class="detail-block">
@@ -384,7 +382,7 @@ function disconnect(): void {
 <style scoped>
 .device-panel {
   overflow: hidden;
-  padding: clamp(22px, 3vw, 34px);
+  padding: var(--card-pad);
 }
 
 .loading-panel {
@@ -442,7 +440,7 @@ function disconnect(): void {
   gap: 10px;
   margin-bottom: 22px;
   padding: 10px 12px;
-  border: 1px solid #f5d8c4;
+  border: 1px solid var(--color-energy-line);
   border-radius: var(--radius-sm);
   background: var(--color-energy-soft);
 }
@@ -454,7 +452,7 @@ function disconnect(): void {
 
 .demo-banner p {
   flex: 1;
-  color: #8d4a25;
+  color: var(--color-energy-ink);
   font-size: 0.74rem;
   line-height: 1.5;
 }
@@ -557,7 +555,7 @@ function disconnect(): void {
 }
 
 .qi2-panel.is-on {
-  border-color: #cfe9df;
+  border-color: var(--color-success-line);
   background: linear-gradient(135deg, #fbfefc 0%, var(--color-success-soft) 100%);
 }
 
@@ -739,33 +737,21 @@ function disconnect(): void {
 
 @media (min-width: 981px) {
   .device-panel__overview {
-    gap: 28px;
+    display: grid;
+    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+    align-items: center;
+    gap: clamp(24px, 3vw, 40px);
+    padding: clamp(24px, 2.6vw, 32px);
+  }
+
+  .device-panel__metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
   }
 
   .device-panel__overview :deep(.power-bank-visual) {
-    gap: 14px;
-  }
-
-  .device-panel__overview :deep(.power-bank-visual__stage) {
-    flex-basis: 148px;
-    padding: 8px;
-  }
-
-  .device-panel__overview :deep(.power-bank-visual__body) {
-    width: 128px;
-    border-radius: 22px;
-  }
-
-  .device-panel__overview :deep(.power-bank-visual__cells) {
-    margin: 14px 0 12px;
-  }
-
-  .device-panel__overview :deep(.power-bank-visual__readout) {
-    width: 82px;
-  }
-
-  .device-panel__overview :deep(.power-bank-visual__level) {
-    font-size: 3.3rem;
+    width: 100%;
+    justify-content: center;
   }
 }
 

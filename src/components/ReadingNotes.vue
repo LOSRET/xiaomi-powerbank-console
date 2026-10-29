@@ -48,12 +48,12 @@ const { t } = useI18n()
 
 <style scoped>
 .reading-notes {
-  padding: 22px clamp(22px, 3vw, 30px);
+  padding: var(--card-pad);
 }
 
 .reading-notes h2 {
-  font-size: 0.88rem;
-  font-weight: 630;
+  font-size: 0.9rem;
+  font-weight: 640;
 }
 
 .reading-notes__list {

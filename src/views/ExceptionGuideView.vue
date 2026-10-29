@@ -6,7 +6,7 @@ const { t } = useI18n()
 </script>
 
 <template>
-  <div class="guide-page page-shell">
+  <div class="guide-page page-view page-shell">
     <div class="page-intro">
       <RouterLink to="/" class="back-link">
         <Icon name="arrow-left" :size="15" />
@@ -77,38 +77,6 @@ const { t } = useI18n()
 </template>
 
 <style scoped>
-.guide-page {
-  padding-top: clamp(26px, 4vw, 48px);
-}
-
-.page-intro {
-  max-width: 760px;
-  margin-bottom: 26px;
-}
-
-.back-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  margin-bottom: 24px;
-  color: var(--color-muted);
-  font-size: 0.78rem;
-  font-weight: 550;
-  transition: color var(--transition-fast);
-}
-
-.back-link:hover {
-  color: var(--color-brand-strong);
-}
-
-.page-intro h1 {
-  max-width: 18ch;
-  margin-top: 10px;
-  font-size: clamp(2rem, 4vw, 3rem);
-  font-weight: 640;
-  letter-spacing: -0.05em;
-}
-
 .guide-layout {
   display: grid;
   align-items: start;
@@ -117,7 +85,7 @@ const { t } = useI18n()
 }
 
 .guide-article {
-  padding: clamp(24px, 4vw, 46px);
+  padding: var(--card-pad);
 }
 
 .guide-section + .guide-section {
@@ -161,7 +129,7 @@ const { t } = useI18n()
   gap: 12px;
   margin-top: 38px;
   padding: 16px;
-  border: 1px solid #f5dcb6;
+  border: 1px solid var(--color-warning-line);
   border-radius: var(--radius-sm);
   background: var(--color-warning-soft);
 }
@@ -172,7 +140,7 @@ const { t } = useI18n()
 }
 
 .guide-warning p {
-  color: #7c5a1d;
+  color: var(--color-warning-ink);
   font-size: 0.8rem;
   line-height: 1.65;
 }

@@ -160,4 +160,16 @@ const { t } = useI18n()
     display: none;
   }
 }
+
+@media (max-width: 380px) {
+  .site-nav {
+    flex-wrap: wrap;
+    row-gap: 2px;
+    overflow-x: visible;
+  }
+
+  .site-nav__link {
+    padding: 6px 10px;
+  }
+}
 </style>

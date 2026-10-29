@@ -113,12 +113,12 @@ function demo(): void {
 .connect-card {
   display: flex;
   flex-direction: column;
-  padding: clamp(24px, 3.5vw, 38px);
+  padding: var(--card-pad);
 }
 
 .connect-card > * {
   width: 100%;
-  max-width: 780px;
+  max-width: 680px;
   margin-right: auto;
   margin-left: auto;
 }
@@ -131,6 +131,7 @@ function demo(): void {
 .connect-card__kicker {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 7px;
   color: var(--color-brand-strong);
   font-size: 0.73rem;
@@ -142,13 +143,10 @@ function demo(): void {
   margin-top: 18px;
   font-size: clamp(2rem, 3.4vw, 2.85rem);
   font-weight: 640;
-  line-height: 1.04;
-  letter-spacing: -0.05em;
+  line-height: 1.08;
+  letter-spacing: -0.04em;
   text-align: center;
-}
-
-.connect-card__title:lang(zh) {
-  white-space: nowrap;
+  text-wrap: balance;
 }
 
 .connect-card__body {
@@ -185,7 +183,7 @@ function demo(): void {
   gap: 11px;
   margin-top: 22px;
   padding: 14px;
-  border: 1px solid #f5dcb6;
+  border: 1px solid var(--color-warning-line);
   border-radius: var(--radius-sm);
   background: var(--color-warning-soft);
 }
@@ -197,22 +195,20 @@ function demo(): void {
 
 .compat-note strong {
   display: block;
-  color: #8b5a06;
+  color: var(--color-warning-ink);
   font-size: 0.82rem;
   font-weight: 650;
 }
 
 .compat-note p {
   margin-top: 3px;
-  color: #8a6a35;
+  color: var(--color-warning-ink);
   font-size: 0.76rem;
   line-height: 1.55;
 }
 
 .connect-card > .steps {
   max-width: 680px;
-  margin-right: auto;
-  margin-left: auto;
 }
 
 .steps {

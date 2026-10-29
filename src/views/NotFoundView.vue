@@ -30,7 +30,7 @@ const { t } = useI18n()
 
 .not-found__card {
   max-width: 480px;
-  padding: 34px;
+  padding: var(--card-pad);
   text-align: center;
 }
 

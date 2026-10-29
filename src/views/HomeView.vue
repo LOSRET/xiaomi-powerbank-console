@@ -13,7 +13,7 @@ const connected = computed(() => store.isConnected)
 </script>
 
 <template>
-  <div class="home page-shell">
+  <div class="home page-view page-shell">
     <h1 v-if="connected" class="sr-only">
       {{ t(store.isDemo ? 'dashboard.demoTitle' : 'dashboard.connectedTitle') }}
     </h1>
@@ -64,10 +64,6 @@ const connected = computed(() => store.isConnected)
 </template>
 
 <style scoped>
-.home {
-  padding-top: clamp(24px, 3.5vw, 40px);
-}
-
 .home__grid {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
@@ -84,8 +80,8 @@ const connected = computed(() => store.isConnected)
 .home__about {
   display: grid;
   gap: clamp(20px, 3vw, 30px);
-  margin-top: clamp(20px, 3vw, 32px);
-  padding: clamp(24px, 3.5vw, 38px);
+  margin-top: clamp(20px, 3vw, 30px);
+  padding: var(--card-pad);
 }
 
 .home__about-intro {

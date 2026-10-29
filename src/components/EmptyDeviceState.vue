@@ -22,7 +22,6 @@ const { t } = useI18n()
     <div class="empty-panel__tabs" aria-hidden="true">
       <span class="empty-panel__tab is-active">{{ t('dashboard.detailsTab') }}</span>
       <span class="empty-panel__tab">{{ t('dashboard.anomalyTab') }}</span>
-      <span class="empty-panel__tab-line"></span>
     </div>
     <p class="empty-panel__placeholder">{{ t('empty.details') }}</p>
   </div>
@@ -33,7 +32,7 @@ const { t } = useI18n()
   display: flex;
   min-height: 460px;
   flex-direction: column;
-  padding: clamp(24px, 3.5vw, 36px);
+  padding: var(--card-pad);
 }
 
 .empty-panel__top {
@@ -74,13 +73,13 @@ const { t } = useI18n()
 .empty-panel__tabs {
   display: flex;
   align-items: center;
-  gap: 22px;
-  padding-top: 14px;
-  border-top: 1px solid var(--color-line);
+  gap: 24px;
+  border-bottom: 1px solid var(--color-line);
 }
 
 .empty-panel__tab {
   position: relative;
+  padding-bottom: 12px;
   color: var(--color-faint);
   font-size: 0.78rem;
   font-weight: 550;
@@ -93,18 +92,12 @@ const { t } = useI18n()
 .empty-panel__tab.is-active::after {
   position: absolute;
   right: 0;
-  bottom: -15px;
+  bottom: -1px;
   left: 0;
   height: 2px;
-  border-radius: 2px;
+  border-radius: 2px 2px 0 0;
   background: var(--color-brand);
   content: '';
-}
-
-.empty-panel__tab-line {
-  flex: 1;
-  height: 1px;
-  background: var(--color-line);
 }
 
 .empty-panel__placeholder {
